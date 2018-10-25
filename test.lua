@@ -2201,6 +2201,11 @@ function move_to_right_gate_pic5(drv, cap, tag)
 	repeat
 		--找人
 		ret1 = find_title(drv, cap)
+		if(ret1.y <= 400)
+		then
+			role_quick_move_down_dist(drv, 100)
+		end		
+		--
 		if(ret1.x <= 600)
 		then
 			role_quick_move_right_dist(drv, 300)
@@ -2208,6 +2213,7 @@ function move_to_right_gate_pic5(drv, cap, tag)
 		then
 			role_quick_move_left_dist(drv, 100)
 		end
+		
 		--找门,门位置需要补偿
 		ret = find_right_gate(drv, cap, 0,50, 600, 0, 200, 600)
 		if(ret.ret == 1)	
@@ -2506,6 +2512,17 @@ function pic_6_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	return ret
 end
 -------------7----------------
+function death_to_life(drv, win, cap, hwind)
+	drv:keyPress("enter", 1)
+	sleep(2)
+	local crect = reset_posi(drv, win, hwind, false)
+	--移动鼠标
+	drv:moveTo(crect.x + 375, crect.y + 405)
+	sleep(1)
+	drv:leftClick(1)  --金币恢复
+	sleep(5)
+end
+
 function pic_7_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	--Boss--Boss--Boss--
 	print("--------pic boss---------")
@@ -2560,6 +2577,14 @@ function pic_7_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		--继续下一轮刷副本	
 		return 0;
 	end
+	--确认是否虚弱,回城了
+	ret = confirm_ui_by_size(500,0,300,250, cap, step_conf.tag_31, 0.6, 1)
+	if(ret == 1)
+	then
+		death_to_life(drv, win, cap, ctx.hwind)
+		ctx.step = 3
+		return 6  --返回第三阶段	
+	end	
 	goto redo
 	print("------pic boss over-------")
 	return 7
@@ -2685,7 +2710,7 @@ function decompose_money(drv, win, cap, step_conf)
 	drv:keyPress("a", 1)
 	sleep(1)
 	drv:keyPress("enter", 1)
-	sleep(3)
+	sleep(5)
 	--ecs
 	--confirm_menu(drv,win, cap, step_conf.win_name, step_conf.comm_tag1)
 	return
@@ -2905,7 +2930,7 @@ lc_five_conf ={
 	tag3 = ".\\pic\\5_tag_3.jpg",
 	tag4 = ".\\pic\\5_tag_4.jpg",
 	tag11 = ".\\pic\\5_tag_11.png",
-	tag22 = ".\\pic\\3_tag_1.jpg",
+	tag_31 = ".\\pic\\3_tag_1.jpg",
 	
 }
 lc_six_conf ={
