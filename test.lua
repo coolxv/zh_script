@@ -2685,9 +2685,9 @@ function decompose_money(drv, win, cap, step_conf)
 	drv:keyPress("a", 1)
 	sleep(1)
 	drv:keyPress("enter", 1)
-	sleep(1)
+	sleep(3)
 	--ecs
-	confirm_menu(drv,win, cap, step_conf.win_name, step_conf.comm_tag1)
+	--confirm_menu(drv,win, cap, step_conf.win_name, step_conf.comm_tag1)
 	return
 
 end
@@ -2707,7 +2707,7 @@ function six_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 	then
 ::redo::	
 		drv:keyPress("f12", 2)
-		sleep(5)
+		sleep(3)
 		decompose_money(drv, win, cap, step_conf)
 		--最好在确认下在角色选择的图中了
 		switch_to_role_select(drv, win, cap, step_conf.win_name, step_conf.comm_tag1)
@@ -2860,63 +2860,63 @@ lc_login_conf ={
 	win_name_login = lc_win_name1,
 	win_name = lc_win_name2,
 	exe_path = gc_software_conf.exe_path,
-	tag1 = "D:\\work\\GamePeripheries1\\tmp\\login_tag_1.jpg",
-	tag11 = "D:\\work\\GamePeripheries1\\tmp\\login_tag_11.jpg",
-	tag2 = "D:\\work\\GamePeripheries1\\tmp\\login_tag_2.jpg",
-	tag22 = "D:\\work\\GamePeripheries1\\tmp\\login_tag_22.jpg",
+	tag1 = ".\\pic\\login_tag_1.jpg",
+	tag11 = ".\\pic\\login_tag_11.jpg",
+	tag2 = ".\\pic\\login_tag_2.jpg",
+	tag22 = ".\\pic\\login_tag_22.jpg",
 
 
 }
 
 lc_first_conf ={
 	win_name = lc_win_name2,
-	comm_tag1 = "D:\\work\\GamePeripheries1\\tmp\\comm_tag_1.jpg",
-	tag1 = "D:\\work\\GamePeripheries1\\tmp\\1_tag_1.jpg",
-	tag_21 = "D:\\work\\GamePeripheries1\\tmp\\2_tag_1.jpg",
+	comm_tag1 = ".\\pic\\comm_tag_1.jpg",
+	tag1 = ".\\pic\\1_tag_1.jpg",
+	tag_21 = ".\\pic\\2_tag_1.jpg",
 
 }
 lc_second_conf ={
 	win_name = lc_win_name2,
-	comm_tag1 = "D:\\work\\GamePeripheries1\\tmp\\comm_tag_1.jpg",
-	tag1 = "D:\\work\\GamePeripheries1\\tmp\\2_tag_1.jpg",
-	tag_11 = "D:\\work\\GamePeripheries1\\tmp\\1_tag_1.jpg",
-	tag_31 = "D:\\work\\GamePeripheries1\\tmp\\3_tag_1.jpg",
-	tag_65 = "D:\\work\\GamePeripheries1\\tmp\\6_tag_5.jpg",
+	comm_tag1 = ".\\pic\\comm_tag_1.jpg",
+	tag1 = ".\\pic\\2_tag_1.jpg",
+	tag_11 = ".\\pic\\1_tag_1.jpg",
+	tag_31 = ".\\pic\\3_tag_1.jpg",
+	tag_65 = ".\\pic\\6_tag_5.jpg",
 
 }
 lc_three_conf ={
 	win_name = lc_win_name2,
-	comm_tag1 = "D:\\work\\GamePeripheries1\\tmp\\comm_tag_1.jpg",
-	tag1 = "D:\\work\\GamePeripheries1\\tmp\\3_tag_1.jpg",
-	tag_41 = "D:\\work\\GamePeripheries1\\tmp\\4_tag_1.jpg",
+	comm_tag1 = ".\\pic\\comm_tag_1.jpg",
+	tag1 = ".\\pic\\3_tag_1.jpg",
+	tag_41 = ".\\pic\\4_tag_1.jpg",
 }
 lc_four_conf ={
 	win_name = lc_win_name2,
-	comm_tag1 = "D:\\work\\GamePeripheries1\\tmp\\comm_tag_1.jpg",
-	tag1 = "D:\\work\\GamePeripheries1\\tmp\\4_tag_1.jpg",
-	tag2 = "D:\\work\\GamePeripheries1\\tmp\\4_tag_2.jpg",
-	tag3 = "D:\\work\\GamePeripheries1\\tmp\\4_tag_3.jpg",
+	comm_tag1 = ".\\pic\\comm_tag_1.jpg",
+	tag1 = ".\\pic\\4_tag_1.jpg",
+	tag2 = ".\\pic\\4_tag_2.jpg",
+	tag3 = ".\\pic\\4_tag_3.jpg",
 }
 lc_five_conf ={
 	win_name = lc_win_name2,
-	comm_tag1 = "D:\\work\\GamePeripheries1\\tmp\\comm_tag_1.jpg",
-	tag1 = "D:\\work\\GamePeripheries1\\tmp\\5_tag_1.jpg",
-	tag2 = "D:\\work\\GamePeripheries1\\tmp\\5_tag_2.jpg",
-	tag3 = "D:\\work\\GamePeripheries1\\tmp\\5_tag_3.jpg",
-	tag4 = "D:\\work\\GamePeripheries1\\tmp\\5_tag_4.jpg",
-	tag11 = "D:\\work\\GamePeripheries1\\tmp\\5_tag_11.png",
-	tag22 = "D:\\work\\GamePeripheries1\\tmp\\3_tag_1.jpg",
+	comm_tag1 = ".\\pic\\comm_tag_1.jpg",
+	tag1 = ".\\pic\\5_tag_1.jpg",
+	tag2 = ".\\pic\\5_tag_2.jpg",
+	tag3 = ".\\pic\\5_tag_3.jpg",
+	tag4 = ".\\pic\\5_tag_4.jpg",
+	tag11 = ".\\pic\\5_tag_11.png",
+	tag22 = ".\\pic\\3_tag_1.jpg",
 	
 }
 lc_six_conf ={
 	win_name = lc_win_name2,
-	comm_tag1 = "D:\\work\\GamePeripheries1\\tmp\\comm_tag_1.jpg",
-	tag1 = "D:\\work\\GamePeripheries1\\tmp\\6_tag_1.jpg",
-	tag2 = "D:\\work\\GamePeripheries1\\tmp\\6_tag_2.jpg",
-	tag3 = "D:\\work\\GamePeripheries1\\tmp\\6_tag_3.jpg",
-	tag4 = "D:\\work\\GamePeripheries1\\tmp\\6_tag_4.jpg",
-	tag5 = "D:\\work\\GamePeripheries1\\tmp\\6_tag_5.jpg",
-	tag_11 = "D:\\work\\GamePeripheries1\\tmp\\1_tag_1.jpg",
+	comm_tag1 = ".\\pic\\comm_tag_1.jpg",
+	tag1 = ".\\pic\\6_tag_1.jpg",
+	tag2 = ".\\pic\\6_tag_2.jpg",
+	tag3 = ".\\pic\\6_tag_3.jpg",
+	tag4 = ".\\pic\\6_tag_4.jpg",
+	tag5 = ".\\pic\\6_tag_5.jpg",
+	tag_11 = ".\\pic\\1_tag_1.jpg",
 }
 -------------------------------------------------------------------------------
 ----------------------------------context--------------------------------------
