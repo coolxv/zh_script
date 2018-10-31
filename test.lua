@@ -47,6 +47,7 @@ function reset_posi(drv, win, hwind ,adjust)
 	--移动界面
 	print("rest position", adjust)
 	local crect
+	local count = 0
 	if(adjust == true)
 	then
 		repeat
@@ -55,11 +56,11 @@ function reset_posi(drv, win, hwind ,adjust)
 			print("before position1:", crect.x, crect.y)
 			--dump_table(crect)
 			--移动游戏客户端
-			drv:moveTo(crect.x + 200, crect.y + 10)
+			drv:moveTo(crect.x + 250, crect.y + 10)
 			sleep(0.5)
 			drv:leftDown()
 			sleep(1)
-			drv:moveTo(210, 20)
+			drv:moveTo(260, 20)
 			sleep(0.5)
 			drv:leftUp()
 			--重新获取客户端位置
@@ -70,29 +71,39 @@ function reset_posi(drv, win, hwind ,adjust)
 				sleep(2)
 			end
 		until(crect.ret > 0 and crect.x == 10 and crect.y == 10)
-	end
-	repeat
+		
+		repeat
+			--获取客户端位置
+			count = count + 1
+			crect = win:getClientSize(hwind)
+			print("before position2:", crect.x, crect.y)
+			--dump_table(crect)
+			--移动游戏客户端
+			drv:moveTo(crect.x + 250, crect.y + 10)
+			sleep(0.5)
+			drv:leftDown()
+			sleep(1)
+			drv:moveTo(250, 10)
+			sleep(0.5)
+			drv:leftUp()
+			--重新获取客户端位置
+			crect = win:getClientSize(hwind)
+			print("after position2:", crect.x, crect.y)
+			if(crect.ret == 0)
+			then
+				sleep(2)
+			end
+		until((crect.ret > 0 and crect.x == 0 and crect.y == 0) or count > 5 )
+	else
 		--获取客户端位置
 		crect = win:getClientSize(hwind)
-		print("before position2:", crect.x, crect.y)
-		--dump_table(crect)
-		--移动游戏客户端
-		drv:moveTo(crect.x + 200, crect.y + 10)
+		print("current position:", crect.x, crect.y)
+		--激活
+		drv:moveTo(crect.x + 250, crect.y + 10)
 		sleep(0.5)
-		drv:leftDown()
-		sleep(1)
-		drv:moveTo(200, 10)
-		sleep(0.5)
-		drv:leftUp()
-		--重新获取客户端位置
-		crect = win:getClientSize(hwind)
-		print("after position2:", crect.x, crect.y)
-		if(crect.ret == 0)
-		then
-			sleep(2)
-		end
-	until(crect.ret > 0 and crect.x == 0 and crect.y == 0 )
-	sleep(2)
+		drv:leftClick(1)
+	end
+
 	return crect
 end
 --鼠标移动到x，y位置
@@ -111,7 +122,7 @@ function mouse_reset(drv, win, hwind)
 	--获取客户端位置
 	local crect = win:getClientSize(hwind)
 	--移动移动鼠标
-	drv:moveTo(crect.x + 200, crect.y + 10)
+	drv:moveTo(crect.x + 250, crect.y + 10)
 	sleep(0.1)
 	drv:leftClick(1)
 	return crect
@@ -125,7 +136,7 @@ function confirm_menu(drv, win, cap, win_name, pic)
 	--获取客户端位置
 	local crect = win:getClientSize(hwind)
 	--移动鼠标
-	drv:moveTo(crect.x + 200, crect.y + 10)
+	drv:moveTo(crect.x + 250, crect.y + 10)
 	drv:leftClick(1)
 	sleep(0.1)
 ::redo::
@@ -1288,54 +1299,28 @@ function use_dskill(drv, skills, s)
 end
 --放大技能
 function use_bskill(drv, skills, s)
-	local cur_time = os.time()
-	if((cur_time - skills[s].use_time) > skills[s].fix_time)
-	then
-			drv:keyPress(s,5)
-			sleep(skills[s].freeze_time)
-			skills[s].use_time = cur_time
-			print("bskill 1:",s)
-			return
-	end
+
 	local t = {'h', 'g'}
 	for k,v in ipairs(t) 
 	do
-		if((cur_time - skills[v].use_time) > skills[v].fix_time)
-		then
-				drv:keyPress(v,5)
-				sleep(skills[v].freeze_time)
-				skills[v].use_time = cur_time
-				print("bskill 2:",v)
-				return
-		end
+		drv:keyPress(v,3)
+		print("bskill 2:",v)
 	end
-	t = {'q', 'w', 'e', 'r', 't', 'y'}
+	t = {'y', 'w', 'e', 'r', 't', 'q'}
 	for k,v in ipairs(t) 
 	do
-		if((cur_time - skills[v].use_time) > skills[v].fix_time)
-		then
-				drv:keyPress(v,5)
-				sleep(skills[v].freeze_time)
-				skills[v].use_time = cur_time
-				print("bskill 3:",v)
-				return
-		end
+		drv:keyPress(v,3)
+		print("bskill 3:",v)
 	end
 	t = {'a', 's', 'd', 'f'}
 	for k,v in ipairs(t) 
 	do
-		if((cur_time - skills[v].use_time) > skills[v].fix_time)
-		then
-				drv:keyPress(v,5)
-				sleep(skills[v].freeze_time)
-				skills[v].use_time = cur_time
-				print("bskill 4:",v)
-				return
-		end
+		drv:keyPress(v,1)
+		print("bskill 4:",v)
 	end
 	--drv:keyPress('z',1)
 	--sleep(0.5)
-	drv:keyPress('x',6)	
+	drv:keyPress('x',3)	
 	print("bskill 5:x")
 end
 --放主技能
@@ -1646,9 +1631,10 @@ function move_to_money(drv, cap)
 end
 
 -------------hit monster----------------
-function hit_monster_1(drv, cap, skills, first)
+function hit_monster_1(drv, cap, skills, tag, first)
 	local ret
 	local ret1
+	local ret2
 	print("hit monster 1", first)
 	if(first == true)
 	then
@@ -1674,6 +1660,7 @@ function hit_monster_1(drv, cap, skills, first)
 		--use_sskill(drv, skills, "a", 1)
 	end
 	--消灭怪物
+	sleep(1.5)
 	repeat
 		ret1 = move_to_monster(drv, cap , 0, 0)
 		if(ret1 == 1)
@@ -1681,12 +1668,14 @@ function hit_monster_1(drv, cap, skills, first)
 			print("hit skill = ", skills["pic1"]["second"])
 			use_sskill(drv, skills, skills["pic1"]["second"], 1)
 		end
-	until(ret1 == 0)
+		ret2 = confirm_posi(cap, tag)
+	until(ret1 == 0 or ret2 ~= 1)
 
 end
-function hit_monster_2(drv, cap, skills, first)
+function hit_monster_2(drv, cap, skills, tag, first)
 	local ret
 	local ret1
+	local ret2
 	print("hit monster 2", first)
 	if(first == true)
 	then
@@ -1700,6 +1689,7 @@ function hit_monster_2(drv, cap, skills, first)
 		--use_mskill(drv, skills, "w", 2)
 	end
 	--消灭怪物
+	sleep(1.5)
 	repeat
 		ret1 = move_to_monster(drv, cap , 0, 0)
 		if(ret1 == 1)
@@ -1707,12 +1697,14 @@ function hit_monster_2(drv, cap, skills, first)
 			print("hit skill = ", skills["pic2"]["second"])
 			use_sskill(drv, skills, skills["pic2"]["second"], 2)
 		end
-	until(ret1 == 0)
+		ret2 = confirm_posi(cap, tag)
+	until(ret1 == 0 or ret2 ~= 2)
 
 end
-function hit_monster_3(drv, cap, skills, first)
+function hit_monster_3(drv, cap, skills, tag, first)
 	local ret
 	local ret1
+	local ret2
 	print("hit monster 3", first)
 	if(first == true)
 	then
@@ -1726,18 +1718,21 @@ function hit_monster_3(drv, cap, skills, first)
 		--use_mskill(drv, skills, "e", 3)
 	end
 	--消灭怪物
+	sleep(1.5)
 	repeat
 		ret1 = move_to_monster(drv, cap , 0, 0)
 		if(ret1 == 1)
 		then
 			use_sskill(drv, skills, skills["pic3"]["second"], 3)
 		end
-	until(ret1 == 0)
+		ret2 = confirm_posi(cap, tag)
+	until(ret1 == 0 or ret2 ~= 3)
 
 end
-function hit_monster_4(drv, cap, skills, first)
+function hit_monster_4(drv, cap, skills, tag, first)
 	local ret
 	local ret1
+	local ret2
 	print("hit monster 4", first)
 	if(first == true)
 	then
@@ -1754,18 +1749,21 @@ function hit_monster_4(drv, cap, skills, first)
 		--use_mskill(drv, skills, "t", 4)
 	end
 	--消灭怪物
+	sleep(1.5)
 	repeat
 		ret1 = move_to_monster(drv, cap , 0, 0)
 		if(ret1 == 1)
 		then
 			use_sskill(drv, skills, skills["pic4"]["second"], 4)
 		end
-	until(ret1 == 0)
+		ret2 = confirm_posi(cap, tag)
+	until(ret1 == 0 or ret2 ~= 4)
 
 end
-function hit_monster_5(drv, cap, skills, first)
+function hit_monster_5(drv, cap, skills, tag, first)
 	local ret
 	local ret1
+	local ret2
 	print("hit monster 5", first)
 	if(first == true)
 	then
@@ -1792,6 +1790,7 @@ function hit_monster_5(drv, cap, skills, first)
 		end
 	until(ret1 == 0)
 	--消灭怪物
+	sleep(1)
 	local count = 0
 	repeat
 		count =  count + 1
@@ -1804,12 +1803,14 @@ function hit_monster_5(drv, cap, skills, first)
 		then
 			goto redo
 		end
-	until(ret1 == 0)
+		ret2 = confirm_posi(cap, tag)
+	until(ret1 == 0 or ret2 ~= 5)
 end
 
-function hit_monster_6(drv, cap, skills, first)
+function hit_monster_6(drv, cap, skills, tag, first)
 	local ret
 	local ret1
+	local ret2
 	print("hit monster 6", first)
 
 	--移动到指定位置
@@ -1828,13 +1829,15 @@ function hit_monster_6(drv, cap, skills, first)
 		role_quick_move_down_dist(drv, 300)
 	end
 	--消灭怪物
+	sleep(1)
 	repeat
 		ret1 = move_to_monster(drv, cap , 0, 0)
 		if(ret1 == 1)
 		then
 			use_sskill(drv, skills, skills["pic6"]["second"], 6)
 		end
-	until(ret1 == 0)
+		ret2 = confirm_posi(cap, tag)
+	until(ret1 == 0 or ret2 ~= 6)
 
 end
 function hit_monster_7(drv, cap, skills, first)
@@ -1865,9 +1868,10 @@ function hit_monster_7(drv, cap, skills, first)
 	until(ret1 == 0)
 
 end
-function hit_monster_8(drv, cap, skills, first)
+function hit_monster_8(drv, cap, skills, tag, first)
 	local ret
 	local ret1
+	local ret2
 	print("hit monster 8", first)
 	if(first == true)
 	then
@@ -1879,6 +1883,7 @@ function hit_monster_8(drv, cap, skills, first)
 		--use_mskill(drv, skills, "q", 8)
 	end
 	--消灭怪物
+	sleep(1)
 	repeat
 		ret1 = move_to_monster(drv, cap , 0, 0)
 		if(ret1 == 1)
@@ -1886,12 +1891,14 @@ function hit_monster_8(drv, cap, skills, first)
 			use_sskill(drv, skills, skills["pic8"]["second"], 8)
 			sleep(1)
 		end
-	until(ret1 == 0)
+		ret2 = confirm_posi(cap, tag)
+	until(ret1 == 0 or ret2 ~= 8)
 
 end
-function hit_monster_9(drv, cap, skills, first)
+function hit_monster_9(drv, cap, skills, tag, first)
 	local ret
 	local ret1
+	local ret2
 	print("hit monster 9", first)
 	if(first == true)
 	then
@@ -1903,6 +1910,7 @@ function hit_monster_9(drv, cap, skills, first)
 		--use_mskill(drv, skills, "q", 9)
 	end
 	--消灭怪物
+	sleep(1)
 	repeat
 		ret1 = move_to_monster(drv, cap , 0, 0)
 		if(ret1 == 1)
@@ -1910,7 +1918,8 @@ function hit_monster_9(drv, cap, skills, first)
 			use_sskill(drv, skills, skills["pic9"]["second"], 9)
 			sleep(1)
 		end
-	until(ret1 == 0)
+		ret2 = confirm_posi(cap, tag)
+	until(ret1 == 0 or ret2 ~= 9)
 
 end
 -------------pick up money----------------
@@ -2357,7 +2366,7 @@ function pic_1_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	ret = confirm_finish_by_color(cap, 1)
 	while(ret == 0)
 	do
-		hit_monster_1(drv, cap, role_conf.skills[seq], first)
+		hit_monster_1(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
 		ctx.begin = true
 		first = false
 		ret = confirm_finish_by_color(cap, 1)
@@ -2387,7 +2396,7 @@ function pic_2_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	ret = confirm_finish_by_color(cap, 2)
 	while(ret == 0)
 	do
-		hit_monster_2(drv, cap, role_conf.skills[seq], first)
+		hit_monster_2(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
 		ctx.begin = true
 		first = false
 		ret = confirm_finish_by_color(cap, 2)
@@ -2409,7 +2418,7 @@ function pic_3_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	ret = confirm_finish_by_color(cap, 3)
 	while(ret == 0)
 	do
-		hit_monster_3(drv, cap, role_conf.skills[seq], first)
+		hit_monster_3(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
 		ctx.begin = true
 		first = false
 		ret = confirm_finish_by_color(cap, 3)
@@ -2432,7 +2441,7 @@ function pic_4_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	ret = confirm_finish_by_color(cap, 4)
 	while(ret == 0 and ret1 == 4)
 	do
-		hit_monster_4(drv, cap, role_conf.skills[seq], first)
+		hit_monster_4(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
 		ctx.begin = true
 		first = false
 		ret = confirm_finish_by_color(cap, 4)
@@ -2456,7 +2465,7 @@ function pic_5_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	ret = confirm_finish_by_color(cap, 5)
 	while(ret == 0 and ret1 == 5)
 	do
-		hit_monster_5(drv, cap, role_conf.skills[seq], first)
+		hit_monster_5(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
 		ctx.begin = true
 		first = false
 		ret = confirm_finish_by_color(cap, 5)
@@ -2477,7 +2486,7 @@ function pic_6_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	local first = true
 	repeat
 		--确认此图是否完成,未完成重复刷怪
-		hit_monster_6(drv, cap, role_conf.skills[seq], first)
+		hit_monster_6(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
 		ctx.begin = true
 		first = false
 		--捡装备
@@ -2570,7 +2579,7 @@ function pic_8_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	print("--------pic 8---------")
 	local ret
 	--确认此图是否完成,未完成重复刷怪
-	hit_monster_8(drv, cap, role_conf.skills[seq], true)
+	hit_monster_8(drv, cap, role_conf.skills[seq], step_conf.tag11, true)
 	ctx.begin = true
 
 	--捡装备
@@ -2586,7 +2595,7 @@ function pic_9_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	print("--------pic 9---------")
 	local ret
 	--确认此图是否完成,未完成重复刷怪
-	hit_monster_9(drv, cap, role_conf.skills[seq], true)
+	hit_monster_9(drv, cap, role_conf.skills[seq], step_conf.tag11, true)
 	ctx.begin = true
 
 	--捡装备
@@ -2779,7 +2788,7 @@ function five_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 			else
 				count = 0
 			end
-			if(count > 15)
+			if(count > 25)
 			then
 				--back_to_town(drv, win, cap, step_conf.win_name, step_conf.comm_tag1)
 				ret2 = 0
@@ -2795,7 +2804,7 @@ function five_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 			else
 				count = 0
 			end
-			if(count > 15)
+			if(count > 25)
 			then
 				--back_to_town(drv, win, cap, step_conf.win_name, step_conf.comm_tag1)
 				ret2 = 0
