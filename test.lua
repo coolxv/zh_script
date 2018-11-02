@@ -3350,8 +3350,24 @@ end
 -------------------------------------------------------------------------------
 -------------------------------------end---------------------------------------
 -------------------------------------------------------------------------------
-function main()
-	account_loop()
-end
 --执行程序入口
-main()
+function init_task_to_run()
+	account_loop()
+	return 1
+end
+
+--结束程序入口
+function fini_task_to_stop()
+	local drv = DrvIntf:new()
+	local ret = drv:openDevice(gc_hardware_conf.vid, gc_hardware_conf.pid)
+	if(1 == ret)
+	then
+		drv:keyUp("up")
+		drv:keyUp("down")
+		drv:keyUp("right")
+		drv:keyUp("left")
+		drv:keyUp("enter")
+	end
+	return 1
+end
+
