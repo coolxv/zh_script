@@ -98,15 +98,15 @@ function role_quick_move_left_dist(drv, n)
 	local v = n/370
 	if(v < 0.1)
 	then 
-		v = 0.1
+		v = 0.2
 	elseif(v > 0.1 and v < 0.2)
 	then
-		v = 0.2 
+		v = 0.3
 	end
-
-	drv:keyPress("left",3)
+	drv:keyPress("left", 1)
+	sleep(0.1)
 	drv:keyDown("left")
-	sleep(v)
+	sleep(v-0.1)
 	drv:keyUp("left")
 	print("move quick left by dist", v)
 end
@@ -114,15 +114,15 @@ function role_quick_move_right_dist(drv, n)
 	local v = n/370
 	if(v < 0.1)
 	then 
-		v = 0.1
+		v = 0.2
 	elseif(v > 0.1 and v < 0.2)
 	then
-		v = 0.2 
+		v = 0.3
 	end
-
-	drv:keyPress("right",3)
+	drv:keyPress("right", 1)
+	sleep(0.1)
 	drv:keyDown("right")
-	sleep(v)
+	sleep(v-0.1)
 	drv:keyUp("right")
 	print("move quick right by dist", v)
 end
@@ -130,10 +130,10 @@ function role_quick_move_up_dist(drv, n)
 	local v = n/120
 	if(v < 0.1)
 	then 
-		v = 0.1
+		v = 0.2
 	elseif(v > 0.1 and v < 0.2)
 	then
-		v = 0.2 
+		v = 0.3
 	end
 	drv:keyDown("up")
 	sleep(v)
@@ -144,10 +144,10 @@ function role_quick_move_down_dist(drv, n)
 	local v = n/120
 	if(v < 0.1)
 	then 
-		v = 0.1
+		v = 0.2
 	elseif(v > 0.1 and v < 0.2)
 	then
-		v = 0.2 
+		v = 0.3 
 	end
 	drv:keyDown("down")
 	sleep(v)
@@ -160,18 +160,16 @@ function role_quick_move_left_up_dist(drv, n)
 	local v = n/370
 	if(v < 0.1)
 	then 
-		v = 0.1
+		v = 0.2
 	elseif(v > 0.1 and v < 0.2)
 	then
-		v = 0.2 
+		v = 0.3
 	end	
-	drv:keyPress("left",1)
-	sleep(0.2)
-	drv:keyPress("left",1)
-	drv:keyDown("left")
+	drv:keyPress("left", 1)
 	sleep(0.1)
+	drv:keyDown("left")
 	drv:keyDown("up")
-	sleep(v)
+	sleep(v-0.1)
 	drv:keyUp("up")
 	drv:keyUp("left")
 	print("move quick left-up by dist", v)
@@ -180,60 +178,54 @@ function role_quick_move_right_up_dist(drv, n)
 	local v = n/370
 	if(v < 0.1)
 	then 
-		v = 0.1
+		v = 0.2
 	elseif(v > 0.1 and v < 0.2)
 	then
-		v = 0.2 
+		v = 0.3
 	end	
-	drv:keyPress("right",1)
-	sleep(0.2)
-	drv:keyPress("right",1)
-	drv:keyDown("right")
+	drv:keyPress("right", 1)
 	sleep(0.1)
+	drv:keyDown("right")
 	drv:keyDown("up")
-	sleep(v)
+	sleep(v-0.1)
 	drv:keyUp("up")
-	drv:keyUp("right")
+	drv:keyUp("right")	
 	print("move quick right-up by dist", v)
 end
 function role_quick_move_left_down_dist(drv, n)
 	local v = n/370
 	if(v < 0.1)
 	then 
-		v = 0.1
+		v = 0.2
 	elseif(v > 0.1 and v < 0.2)
 	then
-		v = 0.2 
+		v = 0.3
 	end	
-	drv:keyPress("left",1)
-	sleep(0.2)
-	drv:keyPress("left",1)
-	drv:keyDown("left")
+	drv:keyPress("left", 1)
 	sleep(0.1)
+	drv:keyDown("left")
 	drv:keyDown("down")
-	sleep(v)
+	sleep(v-0.1)
 	drv:keyUp("down")
-	drv:keyUp("left")
+	drv:keyUp("left")	
 	print("move quick left-down by dist", v)
 end
 function role_quick_move_right_down_dist(drv, n)
 	local v = n/370
 	if(v < 0.1)
 	then 
-		v = 0.1
+		v = 0.2
 	elseif(v > 0.1 and v < 0.2)
 	then
-		v = 0.2 
+		v = 0.3
 	end	
-	drv:keyPress("right",1)
-	sleep(0.2)
-	drv:keyPress("right",1)
-	drv:keyDown("right")
+	drv:keyPress("right", 1)
 	sleep(0.1)
+	drv:keyDown("right")
 	drv:keyDown("down")
-	sleep(v)
+	sleep(v-0.1)
 	drv:keyUp("down")
-	drv:keyUp("right")
+	drv:keyUp("right")	
 	print("move quick right-down by dist", v)
 end
 -------------------------------------------------------------------------------
@@ -673,7 +665,7 @@ function find_money(drv, cap)
 	if(ret.ret == 1)
 	then
 		 --门位置补偿plus像素
-		ret.y = ret.y + 10
+		--ret.y = ret.y + 10
 		print("find money", ret.x, ret.y)
 	else
 		print("not find money")
@@ -1118,15 +1110,15 @@ function second_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 			--最好在确认下在角色选择的图中了
 			local count = 0
 			repeat
-				sleep(5)
+				sleep(3)
 				count = count +  1
 				ret = confirm_ui(cap, step_conf.tag_11, 0.8, 1)
 			until(ret > 0 or count >= 10)
 			if(ret > 0)
 			then
-				return 3  --返回上一阶段
+				return 3  --退出，继续下一个角色
 			else
-				goto redo  --??异常程序退出
+				goto redo  --
 			end
 		end
 	end
@@ -1440,19 +1432,23 @@ function use_xskill(drv)
 	print("xskill : x")
 end
 -------------move to boss----------------
-function confirm_title_move_to_right(drv, cap, n)
+function confirm_title_move_to_right(drv, cap, n, neg)
 	local ret
 	local ret1
 	local count = 0
 	repeat
 		count = count + 1
 		ret = find_title(drv, cap)
-		role_quick_move_right_dist(drv, n)
+		role_move_right_dist(drv, n)
 		ret1 = find_title(drv, cap)
 		print("confirm title to move right", count, ret.ret, ret1.ret, ret.x, ret1.x)
 	until((ret.ret > 0 and ret1.ret > 0 and ret.x ~= ret1.x) or count > 2)
+	if(neg == true)
+	then
+		drv:keyPress("left", 1)
+	end
 end
-function confirm_title_move_to_left(drv, cap, n)
+function confirm_title_move_to_left(drv, cap, n, neg)
 	local ret
 	local ret1
 	local count = 0
@@ -1463,8 +1459,10 @@ function confirm_title_move_to_left(drv, cap, n)
 		ret1 = find_title(drv, cap)
 		print("confirm title to move left", count, ret.ret, ret1.ret, ret.x, ret1.x)
 	until((ret.ret > 0 and ret1.ret > 0 and ret.x ~= ret1.x) or count > 2)
-	role_move_right_dist(drv, 0)
-	
+	if(neg == true)
+	then
+		drv:keyPress("right", 1)
+	end	
 end
 function move_to_boss(drv, cap, xt, yt)
 	local ret
@@ -1682,15 +1680,15 @@ function hit_monster_1(drv, cap, skills, tag, first)
 	then
 		--加buff
 		--移动到指定位置
-		confirm_title_move_to_left(drv, cap, 30)
+		confirm_title_move_to_left(drv, cap, 5, false)
 		local count = 0
 		repeat
 			count = count + 1
-			drv:keyPress('right',4)
+			drv:keyPress('right',3)
 			drv:keyPress('space',2)
 		until(count >=1)
 		--移动到指定位置
-		role_quick_move_right_dist(drv, 50)
+		sleep(0.5)
 		for k,v in ipairs(skills["pic1"]["first"]) 
 		do
 			use_mskill(drv, skills, v, 1)
@@ -1716,6 +1714,7 @@ function hit_monster_2(drv, cap, skills, tag, first)
 	if(first == true)
 	then
 		--移动到指定位置
+		confirm_title_move_to_left(drv, cap, 5, true)
 		role_quick_move_right_dist(drv, 250)
 		for k,v in ipairs(skills["pic2"]["first"]) 
 		do
@@ -1742,7 +1741,8 @@ function hit_monster_3(drv, cap, skills, tag, first)
 	if(first == true)
 	then
 		--移动到指定位置
-		role_quick_move_right_dist(drv, 285)
+		confirm_title_move_to_left(drv, cap, 5, true)
+		role_quick_move_right_dist(drv, 250)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic3"]["first"]) 
 		do
@@ -1769,7 +1769,8 @@ function hit_monster_4(drv, cap, skills, tag, first)
 	if(first == true)
 	then
 		--移动到指定位置
-		role_quick_move_right_down_dist(drv, 200)
+		confirm_title_move_to_left(drv, cap, 5, true)
+		role_quick_move_right_down_dist(drv, 250)
 		role_move_left_dist(drv, 10)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic4"]["first"]) 
@@ -1797,7 +1798,8 @@ function hit_monster_5(drv, cap, skills, tag, first)
 	if(first == true)
 	then
 		--向左移动到指定位置打塔
-		role_quick_move_left_down_dist(drv, 175)
+		confirm_title_move_to_right(drv, cap, 5, true)
+		role_quick_move_left_down_dist(drv, 200)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic5"]["first"]) 
 		do
@@ -1840,7 +1842,8 @@ function hit_monster_6(drv, cap, skills, tag, first)
 	--移动到指定位置
 	if(first == true)
 	then
-		role_quick_move_right_up_dist(drv, 150)
+		confirm_title_move_to_left(drv, cap, 5, true)
+		role_quick_move_right_up_dist(drv, 125)
 		role_quick_move_right_dist(drv, 125)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic6"]["first"]) 
@@ -1870,8 +1873,8 @@ function hit_monster_7(drv, cap, skills, first)
 	--移动到指定位置
 	if(first == true)
 	then
-		confirm_title_move_to_right(drv, cap, 50)
 		--移动到指定位置
+		confirm_title_move_to_right(drv, cap, 50, false)
 		for k,v in ipairs(skills["pic7"]["first"]) 
 		do
 			use_dskill(drv, skills, v)
@@ -1895,6 +1898,7 @@ function hit_monster_8(drv, cap, skills, tag, first)
 	if(first == true)
 	then
 		--移动到指定位置
+		confirm_title_move_to_left(drv, cap, 50, false)
 		for k,v in ipairs(skills["pic8"]["first"]) 
 		do
 			use_mskill(drv, skills, v, 8)
@@ -1920,6 +1924,7 @@ function hit_monster_9(drv, cap, skills, tag, first)
 	if(first == true)
 	then
 		--移动到指定位置
+		confirm_title_move_to_left(drv, cap, 50, false)
 		for k,v in ipairs(skills["pic9"]["first"]) 
 		do
 			use_mskill(drv, skills, v, 9)
@@ -2027,7 +2032,7 @@ function move_to_right_gate_pic2(drv, cap, tag)
 			role_quick_move_right_dist(drv, 500)
 		elseif(ret1.x >= 625)
 		then
-			role_quick_move_left_dist(drv, 75)
+			role_quick_move_left_dist(drv, 50)
 		end
 		--找门,门位置需要补偿
 		ret = find_right_gate(drv, cap, 0, 90, 600,0, 200, 600)
@@ -2196,9 +2201,9 @@ function move_to_right_gate_pic5(drv, cap, tag)
 		if(ret1.x <= 600)
 		then
 			role_quick_move_right_dist(drv, 400)
-		elseif(ret1.x >= 600)
+		elseif(ret1.x >= 700)
 		then
-			role_quick_move_left_dist(drv, 100)
+			role_quick_move_left_dist(drv, 50)
 		end
 		
 		--找门,门位置需要补偿
@@ -2706,7 +2711,7 @@ function five_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		ret3 = confirm_death(drv, win, cap, step_conf, ctx)
 		if(ret3 == 1)
 		then
-			ctx.step = 5
+			ctx.step = 2
 			ret2 = 3
 			goto death
 		end
@@ -2912,16 +2917,15 @@ function six_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 		switch_to_role_select(drv, win, cap, step_conf.win_name, step_conf.comm_tag1)
 		local count = 0
 		repeat
-			sleep(5)
+			sleep(3)
 			count = count +  1
 			ret = confirm_ui(cap, step_conf.tag_11, 0.8, 1)
 		until(ret > 0 or count >= 3)
 		if(ret > 0)
 		then
-			ctx.step = 2
-			return 6  --返回第二阶段
+			return 3  --退出，继续下一个角色
 		else
-			goto redo  --??异常程序退出
+			goto redo  --
 		end
 	end
 	--检测一下包裹是否满了
@@ -3362,11 +3366,11 @@ function fini_task_to_stop()
 	local ret = drv:openDevice(gc_hardware_conf.vid, gc_hardware_conf.pid)
 	if(1 == ret)
 	then
-		drv:keyUp("up")
-		drv:keyUp("down")
-		drv:keyUp("right")
-		drv:keyUp("left")
-		drv:keyUp("enter")
+		drv:keyPress("up", 1)
+		drv:keyPress("down", 1)
+		drv:keyPress("right", 1)
+		drv:keyPress("left", 1)
+		--drv:keyPress("enter", 1)
 	end
 	return 1
 end
