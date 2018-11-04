@@ -1868,7 +1868,48 @@ function hit_monster_5(drv, cap, skills, tag, first)
 		ret2 = confirm_posi(cap, tag)
 	until(ret1 == 0 or ret2 ~= 5)
 end
-
+function hit_monster_5_random(drv, cap, skills, tag, first)
+	local ret
+	local ret1
+	local ret2
+	print("hit monster 5", first)
+	if(first == true)
+	then
+		--向左移动到指定位置打塔
+		confirm_title_move_to_right(drv, cap, 10, false)
+		role_quick_move_right_up_dist(drv, 400)
+		--移动到指定位置
+		for k,v in ipairs(skills["pic5"]["first"]) 
+		do
+			use_mskill(drv, skills, v, 5)
+		end			
+		use_xskill(drv)
+	end
+::redo::
+	--判断塔是否已经消灭
+	repeat
+		ret1 = move_to_tower(drv, cap , 0, 0)
+		if(ret1 == 1)
+		then
+			use_sskill(drv, skills, skills["pic5"]["second"], 5)
+		end
+	until(ret1 == 0)
+	--消灭怪物
+	local count = 0
+	repeat
+		count =  count + 1
+		ret1 = move_to_monster(drv, cap , 0, 0)
+		if(ret1 == 1)
+		then
+			use_sskill(drv, skills, skills["pic5"]["second"], 5)
+		end
+		if(count > 6)
+		then
+			goto redo
+		end
+		ret2 = confirm_posi(cap, tag)
+	until(ret1 == 0 or ret2 ~= 5)
+end
 function hit_monster_6(drv, cap, skills, tag, first)
 	local ret
 	local ret1
@@ -2220,6 +2261,66 @@ function move_to_down_gate_pic4(drv, cap, tag)
 	print("move to down gate from pic 4 over")
 	return posi
 end
+function move_to_left_gate_pic4(drv, cap, tag)
+
+	local posi
+	local ret
+	local ret1
+	print("move to left gate from pic 4")
+	
+	repeat
+		--找人
+		ret1 = find_title(drv, cap)
+		if(ret1.y <= 300)
+		then
+			role_quick_move_down_dist(drv, 100)
+		end
+		if(ret1.x >= 250)
+		then
+			role_quick_move_left_dist(drv, 400)
+		end			
+		--找门,门位置需要补偿
+		ret = find_left_gate(drv, cap, 0, 0, 0, 150, 250, 450)
+		if(ret.ret == 1)	
+		then
+			ret1 = find_title(drv, cap)
+			if(ret.x >= ret1.x)
+			then
+				if(ret.x - ret1.x > 200)
+				then
+					role_quick_move_right_dist(drv, ret.x - ret1.x)
+					role_move_left_dist(drv, 0)
+				else
+					role_quick_move_right_dist(drv, (ret.x - ret1.x)%100)
+					role_move_left_dist(drv, 0)
+				end
+			else
+				role_quick_move_left_dist(drv, ret1.x - ret.x)
+			end
+
+			if(ret.y >= ret1.y)
+			then
+				if(ret.y - ret1.y > 200)
+				then
+					role_quick_move_down_dist(drv, ret.y - ret1.y)
+				else
+					role_quick_move_down_dist(drv, (ret.y - ret1.y)%100)
+				end
+			else
+				role_quick_move_up_dist(drv, ret1.y - ret.y)
+			end	
+		end
+		sleep(1)
+		posi = confirm_posi(cap, tag)
+		if(posi ~= 4)
+		then
+			goto over
+		end
+	until(ret.ret == 0 or posi ~= 4)	
+::over::	
+	print("move to left gate from pic 4 over")
+	return posi
+end
 
 
 function move_to_right_gate_pic5(drv, cap, tag)
@@ -2337,6 +2438,54 @@ function move_to_right_gate_pic8(drv, cap, tag)
 		end
 		--找门,门位置需要补偿
 		ret = find_right_gate(drv, cap, 0,50, 600,0, 200, 600)
+		if(ret.ret == 1)	
+		then
+			ret1 = find_title(drv, cap)
+			if(ret.y >= ret1.y)
+			then
+				role_quick_move_down_dist(drv, ret.y - ret1.y)
+			else
+				role_quick_move_up_dist(drv, ret1.y - ret.y)
+			end	
+			
+			if(ret.x >= ret1.x)
+			then
+				role_quick_move_right_dist(drv, ret.x - ret1.x)
+			else
+				role_quick_move_left_dist(drv, ret1.x - ret.x)
+			end
+		end
+		sleep(1)
+		posi = confirm_posi(cap, tag)
+		if(posi ~= 8)
+		then
+			goto over
+		end
+	until(ret.ret == 0 or posi ~= 8)	
+::over::
+	print("move to right gate from pic 8 over")
+	return posi
+end
+function move_to_down_gate_pic8(drv, cap, tag)
+	local posi
+	local ret
+	local ret1
+	print("move to right gate from pic 8")
+	
+	repeat
+		--找人
+		ret1 = find_title(drv, cap)
+		if(ret1.x >= 600)
+		then
+			role_quick_move_left_dist(drv, 100)
+		end		
+		if(ret1.y <= 300)
+		then
+			role_quick_move_down_dist(drv, 200)
+		end
+
+		--找门,门位置需要补偿
+		ret = find_down_gate(drv, cap, 0,50, 0, 300, 800, 300)
 		if(ret.ret == 1)	
 		then
 			ret1 = find_title(drv, cap)
@@ -2508,6 +2657,33 @@ function pic_4_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	print("------pic 4 over-------")
 	return ret
 end
+function pic_4_random_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
+
+	print("--------pic 4---------")
+	local ret
+	local ret1 = 4
+	local first = true
+	--确认此图是否完成,未完成重复刷怪
+	ret = confirm_finish_by_color(cap, 4)
+	while(ret == 0 and ret1 == 4)
+	do
+		hit_monster_4(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
+		first = false
+		ret = confirm_finish_by_color(cap, 4)
+		ret1 = confirm_posi(cap, step_conf.tag11)
+	end
+	--捡装备
+	pick_money(drv, cap)
+	--进入下一副图
+	if(ctx.random == true)
+	then
+		ret = move_to_left_gate_pic4(drv, cap, step_conf.tag11)
+	else
+		ret = move_to_down_gate_pic4(drv, cap, step_conf.tag11)
+	end
+	print("------pic 4 over-------")
+	return ret
+end
 -------------5----------------
 function pic_5_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 
@@ -2519,7 +2695,12 @@ function pic_5_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	ret = confirm_finish_by_color(cap, 5)
 	while(ret == 0 and ret1 == 5)
 	do
-		hit_monster_5(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
+		if(ctx.random == true)
+		then
+			hit_monster_5_random(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
+		else
+			hit_monster_5(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
+		end
 		first = false
 		ret = confirm_finish_by_color(cap, 5)
 		ret1 = confirm_posi(cap, step_conf.tag11)
@@ -2639,6 +2820,20 @@ function pic_8_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	pick_money(drv, cap)
 	--进入下一副图
 	ret = move_to_right_gate_pic8(drv, cap, step_conf.tag11)
+	print("------pic 8 over-------")
+	return ret
+end
+function pic_8_random_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
+
+	print("--------pic 8---------")
+	local ret
+	--确认此图是否完成,未完成重复刷怪
+	hit_monster_8(drv, cap, role_conf.skills[seq], step_conf.tag11, true)
+
+	--捡装备
+	pick_money(drv, cap)
+	--进入下一副图
+	ret = move_to_down_gate_pic8(drv, cap, step_conf.tag11)
 	print("------pic 8 over-------")
 	return ret
 end
@@ -2794,20 +2989,32 @@ function five_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 			posi = ret
 		elseif(ret == 4 and (posi == 3 or posi == 4 or posi == 5 or posi == 0 or posi == 8))
 		then
+			
 			if(ret == posi)
 			then
 				count = count + 1
 			else
 				count = 0
 			end
-			if(count > 15)
+			if(count > 25)
 			then
 				--back_to_town(drv, win, cap, step_conf.win_name, step_conf.comm_tag1)
 				ret2 = 0
 				goto death
+			elseif(count > 5)
+			then
+				ctx.random = true
+			else
+				ctx.random = false
 			end
-			ret1 = pic_4_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
-			posi = ret
+			if(ctx.random == true)
+			then
+				ret1 = pic_4_random_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
+			else
+				ret1 = pic_4_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
+			end
+			posi = ret			
+			
 		elseif(ret == 5 and (posi == 4 or posi == 5 or posi == 6 or posi == 0 or posi == 9))
 		then
 			if(ret == posi)
@@ -2846,7 +3053,12 @@ function five_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 				ret2 = 0
 				goto death
 			end
+			if(ctx.random == true)
+			then
+			ret1 = pic_8_random_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
+			else
 			ret1 = pic_8_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
+			end
 			posi = ret
 		elseif(ret == 9 and (posi == 5 or posi == 9 or posi == 8 or posi == 0))
 		then
@@ -3162,6 +3374,7 @@ ctx = {
 	count = 1,
 	start = false,
 	step = 0,
+	random = false,
 }
 -------------------------------------------------------------------------------
 -----------------------------------task----------------------------------------
