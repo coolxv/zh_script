@@ -865,6 +865,7 @@ function login_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 	local hwind = win:findWindow("", step_conf.win_name)
 	if(hwind > 0)
 	then
+		ctx.login = false
 		return 0;
 	end
 	return 1
@@ -1260,8 +1261,7 @@ function four_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		end
 	until(ret.ret > 0 )	
 	sleep(1)
-	ret = drv:keyPress("space", 2)
-	ctx.begin =true
+	ret = drv:keyPress("space", 3)
 	return 1
 end
 -------------------------------------------------------------------------------
@@ -1464,6 +1464,41 @@ function confirm_title_move_to_left(drv, cap, n, neg)
 		drv:keyPress("right", 1)
 	end	
 end
+function confirm_title_move_to_up(drv, cap, n, neg)
+	local ret
+	local ret1
+	local count = 0
+	repeat
+		count = count + 1
+		ret = find_title(drv, cap)
+		role_move_up_dist(drv, n)
+		ret1 = find_title(drv, cap)
+		print("confirm title to move up", count, ret.ret, ret1.ret, ret.y, ret1.y)
+	until((ret.ret > 0 and ret1.ret > 0 and ret.y ~= ret1.y) or count > 2)
+	if(neg == true)
+	then
+		drv:keyPress("down", 1)
+	end	
+end
+function confirm_title_move_to_down(drv, cap, n, neg)
+	local ret
+	local ret1
+	local count = 0
+	repeat
+		count = count + 1
+		ret = find_title(drv, cap)
+		role_move_down_dist(drv, n)
+		ret1 = find_title(drv, cap)
+		print("confirm title to move down", count, ret.ret, ret1.ret, ret.y, ret1.y)
+	until((ret.ret > 0 and ret1.ret > 0 and ret.y ~= ret1.y) or count > 2)
+	if(neg == true)
+	then
+		drv:keyPress("up", 1)
+	end	
+end
+
+
+
 function move_to_boss(drv, cap, xt, yt)
 	local ret
 	local ret1
@@ -1714,8 +1749,8 @@ function hit_monster_2(drv, cap, skills, tag, first)
 	if(first == true)
 	then
 		--移动到指定位置
-		confirm_title_move_to_left(drv, cap, 5, true)
-		role_quick_move_right_dist(drv, 250)
+		confirm_title_move_to_up(drv, cap, 5, true)
+		role_quick_move_right_dist(drv, 280)
 		for k,v in ipairs(skills["pic2"]["first"]) 
 		do
 			use_mskill(drv, skills, v, 2)
@@ -1742,7 +1777,7 @@ function hit_monster_3(drv, cap, skills, tag, first)
 	then
 		--移动到指定位置
 		confirm_title_move_to_left(drv, cap, 5, true)
-		role_quick_move_right_dist(drv, 250)
+		role_quick_move_right_dist(drv, 275)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic3"]["first"]) 
 		do
@@ -1769,7 +1804,7 @@ function hit_monster_4(drv, cap, skills, tag, first)
 	if(first == true)
 	then
 		--移动到指定位置
-		confirm_title_move_to_left(drv, cap, 5, true)
+		confirm_title_move_to_down(drv, cap, 25, true)
 		role_quick_move_right_down_dist(drv, 250)
 		role_move_left_dist(drv, 10)
 		--移动到指定位置
@@ -1798,7 +1833,7 @@ function hit_monster_5(drv, cap, skills, tag, first)
 	if(first == true)
 	then
 		--向左移动到指定位置打塔
-		confirm_title_move_to_right(drv, cap, 5, true)
+		confirm_title_move_to_left(drv, cap, 25, true)
 		role_quick_move_left_down_dist(drv, 200)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic5"]["first"]) 
@@ -1843,8 +1878,8 @@ function hit_monster_6(drv, cap, skills, tag, first)
 	if(first == true)
 	then
 		confirm_title_move_to_left(drv, cap, 5, true)
-		role_quick_move_right_up_dist(drv, 125)
-		role_quick_move_right_dist(drv, 125)
+		role_quick_move_right_up_dist(drv, 100)
+		role_quick_move_right_dist(drv, 175)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic6"]["first"]) 
 		do
@@ -1859,7 +1894,7 @@ function hit_monster_6(drv, cap, skills, tag, first)
 		ret1 = move_to_monster(drv, cap , 0, 0)
 		if(ret1 == 1)
 		then
-			use_sskill(drv, skills, skills["pic6"]["second"], 6)
+			use_mskill(drv, skills, skills["pic6"]["second"], 6)
 		end
 		ret2 = confirm_posi(cap, tag)
 	until(ret1 == 0 or ret2 ~= 6)
@@ -2387,7 +2422,6 @@ function pic_1_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	while(ret == 0)
 	do
 		hit_monster_1(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
-		ctx.begin = true
 		first = false
 		ret = confirm_finish_by_color(cap, 1)
 	end
@@ -2417,7 +2451,6 @@ function pic_2_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	while(ret == 0)
 	do
 		hit_monster_2(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
-		ctx.begin = true
 		first = false
 		ret = confirm_finish_by_color(cap, 2)
 	end
@@ -2439,7 +2472,6 @@ function pic_3_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	while(ret == 0)
 	do
 		hit_monster_3(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
-		ctx.begin = true
 		first = false
 		ret = confirm_finish_by_color(cap, 3)
 	end
@@ -2462,7 +2494,6 @@ function pic_4_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	while(ret == 0 and ret1 == 4)
 	do
 		hit_monster_4(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
-		ctx.begin = true
 		first = false
 		ret = confirm_finish_by_color(cap, 4)
 		ret1 = confirm_posi(cap, step_conf.tag11)
@@ -2486,7 +2517,6 @@ function pic_5_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	while(ret == 0 and ret1 == 5)
 	do
 		hit_monster_5(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
-		ctx.begin = true
 		first = false
 		ret = confirm_finish_by_color(cap, 5)
 		ret1 = confirm_posi(cap, step_conf.tag11)
@@ -2507,7 +2537,6 @@ function pic_6_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	repeat
 		--确认此图是否完成,未完成重复刷怪
 		hit_monster_6(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
-		ctx.begin = true
 		first = false
 		--捡装备
 		pick_money(drv, cap)
@@ -2529,7 +2558,6 @@ function pic_7_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 ::redo::
 	num = num + 1
 	hit_monster_7(drv, cap, role_conf.skills[seq], first)
-	ctx.begin = true
 	first = false
 	
 	--确认副本完成 reward
@@ -2557,10 +2585,9 @@ function pic_7_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 			then
 				--打宝箱
 				--捡装备
-				drv:keyPress('NumAdd',1)
-				drv:keyPress('x',10)
 				sleep(0.5)
-				drv:keyPress('x',10)
+				drv:keyPress('NumAdd',1)
+				drv:keyPress('x',20)
 				--继续下一轮刷副本	
 				return 0;
 			end
@@ -2574,10 +2601,9 @@ function pic_7_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	then
 		--打宝箱
 		--捡装备
-		drv:keyPress('NumAdd',1)
-		drv:keyPress('x',10)
 		sleep(0.5)
-		drv:keyPress('x',10)
+		drv:keyPress('NumAdd',1)
+		drv:keyPress('x',20)
 		--继续下一轮刷副本	
 		return 0;
 	end
@@ -2605,7 +2631,6 @@ function pic_8_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	local ret
 	--确认此图是否完成,未完成重复刷怪
 	hit_monster_8(drv, cap, role_conf.skills[seq], step_conf.tag11, true)
-	ctx.begin = true
 
 	--捡装备
 	pick_money(drv, cap)
@@ -2621,7 +2646,6 @@ function pic_9_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	local ret
 	--确认此图是否完成,未完成重复刷怪
 	hit_monster_9(drv, cap, role_conf.skills[seq], step_conf.tag11, true)
-	ctx.begin = true
 
 	--捡装备
 	pick_money(drv, cap)
@@ -2897,8 +2921,7 @@ function six_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 	local ret1
 	
 	--清除特殊修理装备
-	ctx.login = true
-	ctx.begin = true
+	ctx.login = false
 	--查找德利拉商店,存在就不需要esc
 	ret1 = confirm_ui(cap, step_conf.tag4, 0.7, 1)
 	if(ret1 == 0)
@@ -3000,7 +3023,7 @@ function six_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		drv:moveTo(crect.x + 700, crect.y + 515)
 		drv:leftClick(2)
 
-		drv:keyDown("enter", 2)
+		drv:keyDown("enter", 1)
 		--卖1
 		drv:moveTo(crect.x + 490, crect.y + 305)
 		sleep(0.7)
@@ -3034,10 +3057,10 @@ function six_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		sleep(0.7)
 		drv:leftClick(2)
 		
-		drv:keyUp("enter", 2)
+		drv:keyUp("enter", 1)
 	until(count >= 3)	
-	--confirm_menu(drv,win, cap, step_conf.win_name, step_conf.comm_tag1)
-	drv:keyPress("esc", 1)
+	confirm_menu(drv,win, cap, step_conf.win_name, step_conf.comm_tag1)
+	--drv:keyPress("esc", 1)
 ::over::
 	--卖完装备继续刷副本
 	sleep(1)
@@ -3132,7 +3155,6 @@ lc_six_conf ={
 ctx = {
 	login = false,
 	hwind = 0,
-	begin = false,
 	back = false,
 	count = 1,
 	start = false,
@@ -3324,7 +3346,6 @@ function account_proc(conf,user)
 		gc_role = 1
 		ctx.login = false
 		ctx.hwind = 0
-		ctx.begin = false
 		ctx.back = false
 		
 	else
@@ -3366,10 +3387,10 @@ function fini_task_to_stop()
 	local ret = drv:openDevice(gc_hardware_conf.vid, gc_hardware_conf.pid)
 	if(1 == ret)
 	then
-		drv:keyPress("up", 1)
-		drv:keyPress("down", 1)
-		drv:keyPress("right", 1)
-		drv:keyPress("left", 1)
+		drv:keyUp("up", 1)
+		drv:keyUp("down", 1)
+		drv:keyUp("right", 1)
+		drv:keyUp("left", 1)
 		--drv:keyPress("enter", 1)
 	end
 	return 1
