@@ -2735,7 +2735,7 @@ function five_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		ret3 = confirm_death(drv, win, cap, step_conf, ctx)
 		if(ret3 == 1)
 		then
-			ctx.step = 2
+			ctx.step = 4
 			ret2 = 3
 			goto death
 		end
