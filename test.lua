@@ -714,6 +714,7 @@ function find_title(drv, cap)
 
 	 --ÈËÎïÎ»ÖÃ²¹³¥150ÏñËØ
 	ret.y = ret.y + 150
+	ret.x = ret.x + 15
 	print("find title", ret.x, ret.y)
 	--dump_table(ret)
 	return ret

@@ -714,6 +714,7 @@ function find_title(drv, cap)
 
 	 --人物位置补偿150像素
 	ret.y = ret.y + 150
+	ret.x = ret.x + 15
 	print("find title", ret.x, ret.y)
 	--dump_table(ret)
 	return ret
@@ -2641,10 +2642,12 @@ function pic_4_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	local ret
 	local ret1 = 4
 	local first = true
+	local count  = 0
 	--确认此图是否完成,未完成重复刷怪
 	ret = confirm_finish_by_color(cap, 4)
-	while(ret == 0 and ret1 == 4)
+	while(ret == 0 and ret1 == 4 and count < 10)
 	do
+		count = count + 1
 		hit_monster_4(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
 		first = false
 		ret = confirm_finish_by_color(cap, 4)
@@ -2663,10 +2666,12 @@ function pic_4_random_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	local ret
 	local ret1 = 4
 	local first = true
+	local count  = 0
 	--确认此图是否完成,未完成重复刷怪
 	ret = confirm_finish_by_color(cap, 4)
-	while(ret == 0 and ret1 == 4)
+	while(ret == 0 and ret1 == 4 and count < 5)
 	do
+		count = count + 1
 		hit_monster_4(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
 		first = false
 		ret = confirm_finish_by_color(cap, 4)
