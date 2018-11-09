@@ -3343,11 +3343,6 @@ function six_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		ret = cap:findPicByTv(step_conf.tag2, 0.65)
 		dump_table(ret)
 	until(ret.ret > 0 )	
-	--出售
-	sleep(1)
-	drv:moveTo(crect.x + 65, crect.y + 520)
-	sleep(1)
-	drv:leftClick(2)	
 	--装备栏
 	sleep(1)
 	drv:moveTo(crect.x + 495, crect.y + 275)
@@ -3358,41 +3353,46 @@ function six_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		count = count + 1
 		--整理
 		drv:moveTo(crect.x + 700, crect.y + 515)
-		drv:leftClick(3)
+		drv:leftClick(2)
 		sleep(0.8)
 		drv:keyDown("enter", 1)
+		--出售
+		sleep(1)
+		drv:moveTo(crect.x + 65, crect.y + 520)
+		sleep(1)
+		drv:leftClick(2)
 		--卖1
 		drv:moveTo(crect.x + 490, crect.y + 305)
 		sleep(0.8)
-		drv:leftClick(5)
+		drv:leftClick(1)
 		--卖2
 		drv:moveTo(crect.x + 520, crect.y + 305)
 		sleep(0.8)
-		drv:leftClick(5)
+		drv:leftClick(1)
 		--卖3
 		drv:moveTo(crect.x + 550, crect.y + 305)
 		sleep(0.8)
-		drv:leftClick(5)
+		drv:leftClick(1)
 		--卖4
 		drv:moveTo(crect.x + 580, crect.y + 305)
 		sleep(0.8)
-		drv:leftClick(5)
+		drv:leftClick(1)
 		--卖5
 		drv:moveTo(crect.x + 610, crect.y + 305)
 		sleep(0.8)
-		drv:leftClick(5)
+		drv:leftClick(1)
 		--卖6
 		drv:moveTo(crect.x + 640, crect.y + 305)
 		sleep(0.8)
-		drv:leftClick(5)
+		drv:leftClick(1)
 		--卖7
 		drv:moveTo(crect.x + 670, crect.y + 305)
 		sleep(0.8)
-		drv:leftClick(5)
+		drv:leftClick(1)
 		--卖8
 		drv:moveTo(crect.x + 700, crect.y + 305)
 		sleep(0.8)
-		drv:leftClick(5)
+		drv:leftClick(1)
 		
 		drv:keyUp("enter", 1)
 	until(count >= 3)	
