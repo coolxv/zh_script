@@ -98,13 +98,13 @@ function role_quick_move_left_dist(drv, n)
 	local v = n/370
 	if(v < 0.1)
 	then 
-		v = 0.2
+		v = 0.15
 	elseif(v > 0.1 and v < 0.2)
 	then
-		v = 0.3
+		v = 0.25
 	end
 	drv:keyPress("left", 1)
-	sleep(0.1)
+	sleep(0.2)
 	drv:keyDown("left")
 	sleep(v-0.1)
 	drv:keyUp("left")
@@ -114,13 +114,13 @@ function role_quick_move_right_dist(drv, n)
 	local v = n/370
 	if(v < 0.1)
 	then 
-		v = 0.2
+		v = 0.15
 	elseif(v > 0.1 and v < 0.2)
 	then
-		v = 0.3
+		v = 0.25
 	end
 	drv:keyPress("right", 1)
-	sleep(0.1)
+	sleep(0.2)
 	drv:keyDown("right")
 	sleep(v-0.1)
 	drv:keyUp("right")
@@ -130,10 +130,10 @@ function role_quick_move_up_dist(drv, n)
 	local v = n/120
 	if(v < 0.1)
 	then 
-		v = 0.2
+		v = 0.15
 	elseif(v > 0.1 and v < 0.2)
 	then
-		v = 0.3
+		v = 0.25
 	end
 	drv:keyDown("up")
 	sleep(v)
@@ -144,10 +144,10 @@ function role_quick_move_down_dist(drv, n)
 	local v = n/120
 	if(v < 0.1)
 	then 
-		v = 0.2
+		v = 0.15
 	elseif(v > 0.1 and v < 0.2)
 	then
-		v = 0.3 
+		v = 0.25 
 	end
 	drv:keyDown("down")
 	sleep(v)
@@ -160,13 +160,13 @@ function role_quick_move_left_up_dist(drv, n)
 	local v = n/370
 	if(v < 0.1)
 	then 
-		v = 0.2
+		v = 0.15
 	elseif(v > 0.1 and v < 0.2)
 	then
-		v = 0.3
+		v = 0.25
 	end	
 	drv:keyPress("left", 1)
-	sleep(0.1)
+	sleep(0.2)
 	drv:keyDown("left")
 	drv:keyDown("up")
 	sleep(v-0.1)
@@ -178,13 +178,13 @@ function role_quick_move_right_up_dist(drv, n)
 	local v = n/370
 	if(v < 0.1)
 	then 
-		v = 0.2
+		v = 0.15
 	elseif(v > 0.1 and v < 0.2)
 	then
-		v = 0.3
+		v = 0.25
 	end	
 	drv:keyPress("right", 1)
-	sleep(0.1)
+	sleep(0.2)
 	drv:keyDown("right")
 	drv:keyDown("up")
 	sleep(v-0.1)
@@ -196,13 +196,13 @@ function role_quick_move_left_down_dist(drv, n)
 	local v = n/370
 	if(v < 0.1)
 	then 
-		v = 0.2
+		v = 0.15
 	elseif(v > 0.1 and v < 0.2)
 	then
-		v = 0.3
+		v = 0.25
 	end	
 	drv:keyPress("left", 1)
-	sleep(0.1)
+	sleep(0.2)
 	drv:keyDown("left")
 	drv:keyDown("down")
 	sleep(v-0.1)
@@ -214,13 +214,13 @@ function role_quick_move_right_down_dist(drv, n)
 	local v = n/370
 	if(v < 0.1)
 	then 
-		v = 0.2
+		v = 0.15
 	elseif(v > 0.1 and v < 0.2)
 	then
-		v = 0.3
+		v = 0.25
 	end	
 	drv:keyPress("right", 1)
-	sleep(0.1)
+	sleep(0.2)
 	drv:keyDown("right")
 	drv:keyDown("down")
 	sleep(v-0.1)
@@ -2108,7 +2108,7 @@ function pick_money(drv, cap)
 		ret = move_to_money(drv, cap)
 		if(ret == 1)
 		then
-			drv:keyPress('x',2)
+			drv:keyPress('x',1)
 		end
 	until(ret == 0 or count > 6)
 	print("pick up money finish")
@@ -2724,7 +2724,13 @@ function pic_7_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		--捡装备
 		sleep(1)
 		drv:keyPress('NumAdd',1)
-		drv:keyPress('x',20)
+		sleep(0.5)
+		drv:keyPress('x',5)
+		sleep(0.5)
+		drv:keyPress('x',5)
+		sleep(0.5)
+		drv:keyPress('x',5)
+
 		--继续下一轮刷副本	
 		return 0;
 	end
@@ -3130,54 +3136,66 @@ function six_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	--装备栏
 	sleep(1)
 	drv:moveTo(crect.x + 495, crect.y + 275)
-	sleep(1)
+	sleep(0.5)
 	drv:leftClick(2)		
 	count = 0
 	repeat
 		count = count + 1
 		--整理
+		sleep(1)
 		drv:moveTo(crect.x + 700, crect.y + 515)
+		sleep(0.5)
 		drv:leftClick(2)
-		sleep(0.8)
-		drv:keyDown("enter", 1)
 		--出售
 		sleep(1)
 		drv:moveTo(crect.x + 65, crect.y + 520)
-		sleep(1)
+		sleep(0.5)
 		drv:leftClick(2)
+		--
+		sleep(0.5)
+		drv:keyDown("enter", 1)
 		--卖1
+		sleep(0.5)
 		drv:moveTo(crect.x + 490, crect.y + 305)
-		sleep(0.8)
+		sleep(0.5)
 		drv:leftClick(1)
 		--卖2
+		sleep(0.5)
 		drv:moveTo(crect.x + 520, crect.y + 305)
-		sleep(0.8)
+		sleep(0.5)
 		drv:leftClick(1)
 		--卖3
+		sleep(0.5)
 		drv:moveTo(crect.x + 550, crect.y + 305)
-		sleep(0.8)
+		sleep(0.5)
 		drv:leftClick(1)
 		--卖4
+		sleep(0.5)
 		drv:moveTo(crect.x + 580, crect.y + 305)
-		sleep(0.8)
+		sleep(0.5)
 		drv:leftClick(1)
 		--卖5
+		sleep(0.5)
 		drv:moveTo(crect.x + 610, crect.y + 305)
-		sleep(0.8)
+		sleep(0.5)
 		drv:leftClick(1)
 		--卖6
+		sleep(0.5)
 		drv:moveTo(crect.x + 640, crect.y + 305)
-		sleep(0.8)
+		sleep(0.5)
 		drv:leftClick(1)
 		--卖7
+		sleep(0.5)
 		drv:moveTo(crect.x + 670, crect.y + 305)
-		sleep(0.8)
+		sleep(0.5)
 		drv:leftClick(1)
 		--卖8
+		sleep(0.5)
 		drv:moveTo(crect.x + 700, crect.y + 305)
-		sleep(0.8)
+		sleep(0.5)
 		drv:leftClick(1)
-		
+		--
+		sleep(0.5)
 		drv:keyUp("enter", 1)
 	until(count >= 3)	
 	confirm_menu(drv,win, cap, step_conf.win_name, step_conf.comm_tag1)
