@@ -1357,7 +1357,7 @@ function four_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	count = 0	
 	repeat
 		count = count + 1
-		if(count > 8)
+		if(count > 10)
 		then
 			--失败返回到上一阶段
 			drv:keyPress("esc", 1);
@@ -1368,7 +1368,7 @@ function four_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		dump_table(ret)
 		if(ret.ret == 0)
 		then
-			if(count < 5)
+			if(count < 6)
 			then
 				print("move right")
 				drv:keyPress("right", 1)
@@ -2176,7 +2176,7 @@ function move_to_right_gate_pic1(drv, cap, tag)
 			role_quick_move_left_dist(drv, 50)
 		end
 		--找门,门位置需要补偿
-		ret = find_right_gate(drv, cap, 0, 25, 600, 0, 200, 600)
+		ret = find_right_gate(drv, cap, 25, 25, 600, 0, 200, 600)
 		if(ret.ret == 1)	
 		then
 			ret1 = find_title(drv, cap)
@@ -2232,7 +2232,7 @@ function move_to_right_gate_pic2(drv, cap, tag)
 			role_quick_move_left_dist(drv, 50)
 		end
 		--找门,门位置需要补偿
-		ret = find_right_gate(drv, cap, 0, 90, 600,0, 200, 600)
+		ret = find_right_gate(drv, cap, 25, 90, 600,0, 200, 600)
 		if(ret.ret == 1)	
 		then
 			ret1 = find_title(drv, cap)
@@ -2285,7 +2285,7 @@ function move_to_down_gate_pic3(drv, cap, tag)
 			role_quick_move_right_dist(drv, 80)
 		end			
 		--找门,门位置需要补偿
-		ret = find_down_gate(drv, cap, 0, 120, 150, 200, 650, 400)
+		ret = find_down_gate(drv, cap, 25, 120, 150, 200, 650, 400)
 		if(ret.ret == 1)	
 		then
 			ret1 = find_title(drv, cap)
@@ -2338,7 +2338,7 @@ function move_to_down_gate_pic4(drv, cap, tag)
 			role_quick_move_right_dist(drv, 80)
 		end			
 		--找门,门位置需要补偿
-		ret = find_down_gate(drv, cap, 0, 120, 150, 200, 650, 400)
+		ret = find_down_gate(drv, cap, 25, 120, 150, 200, 650, 400)
 		if(ret.ret == 1)	
 		then
 			ret1 = find_title(drv, cap)
@@ -2398,7 +2398,7 @@ function move_to_left_gate_pic4(drv, cap, tag)
 			role_quick_move_left_dist(drv, 400)
 		end			
 		--找门,门位置需要补偿
-		ret = find_left_gate(drv, cap, 0, 0, 0, 150, 250, 450)
+		ret = find_left_gate(drv, cap, 25, 0, 0, 150, 250, 450)
 		if(ret.ret == 1)	
 		then
 			ret1 = find_title(drv, cap)
@@ -2464,7 +2464,7 @@ function move_to_right_gate_pic5(drv, cap, tag)
 		end
 		
 		--找门,门位置需要补偿
-		ret = find_right_gate(drv, cap, 0,50, 600, 0, 200, 600)
+		ret = find_right_gate(drv, cap, 25, 50, 600, 0, 200, 600)
 		if(ret.ret == 1)	
 		then
 			ret1 = find_title(drv, cap)
@@ -2509,7 +2509,7 @@ function move_to_up_gate_pic6(drv, cap, tag)
 			role_quick_move_up_dist(drv, 100)
 		end
 		--找门,门位置需要补偿
-		ret = find_up_gate(drv, cap, 0,30,300,0, 500, 300)
+		ret = find_up_gate(drv, cap, 15, 30 ,300 ,0 , 500, 300)
 		if(ret.ret == 1)	
 		then
 			ret1 = find_title(drv, cap)
@@ -2555,7 +2555,7 @@ function move_to_right_gate_pic8(drv, cap, tag)
 			role_quick_move_left_dist(drv, 50)
 		end
 		--找门,门位置需要补偿
-		ret = find_right_gate(drv, cap, 0,50, 600,0, 200, 600)
+		ret = find_right_gate(drv, cap, 25, 50, 600, 0, 200, 600)
 		if(ret.ret == 1)	
 		then
 			ret1 = find_title(drv, cap)
@@ -2603,7 +2603,7 @@ function move_to_down_gate_pic8(drv, cap, tag)
 		end
 
 		--找门,门位置需要补偿
-		ret = find_down_gate(drv, cap, 0,50, 0, 300, 800, 300)
+		ret = find_down_gate(drv, cap, 25, 50, 0, 300, 800, 300)
 		if(ret.ret == 1)	
 		then
 			ret1 = find_title(drv, cap)
@@ -2651,7 +2651,7 @@ function move_to_right_gate_pic9(drv, cap, tag)
 			role_quick_move_left_dist(drv, 50)
 		end
 		--找门,门位置需要补偿
-		ret = find_right_gate(drv, cap, 0,50, 600,0, 200, 600)
+		ret = find_right_gate(drv, cap, 25, 50, 600,0, 200, 600)
 		if(ret.ret == 1)	
 		then
 			ret1 = find_title(drv, cap)
@@ -2909,7 +2909,13 @@ function pic_7_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		--捡装备
 		sleep(1)
 		drv:keyPress('NumAdd',1)
-		drv:keyPress('x',20)
+		sleep(0.5)
+		drv:keyPress('x',5)
+		sleep(0.5)
+		drv:keyPress('x',5)
+		sleep(0.5)
+		drv:keyPress('x',5)
+
 		--继续下一轮刷副本	
 		return 0;
 	end
@@ -3741,7 +3747,10 @@ end
 -------------------------------------------------------------------------------
 --执行程序入口
 function init_task_to_run()
-	if(check_md5("gpatc.exe", "c89efd691ceaac9e7c04d83bc475cc06"))
+	local win = WinIntf:new()
+	local pn = win:getProcessName()
+	win:delete()
+	if(check_md5(pn, "8a554e17a4b042c73492e8e40a66efcf"))
 	then
 		account_loop()
 		return 1
@@ -3757,10 +3766,10 @@ function fini_task_to_stop()
 	local ret = drv:openDevice(gc_hardware_conf.vid, gc_hardware_conf.pid)
 	if(1 == ret)
 	then
-		drv:keyUp("up")
-		drv:keyUp("down")
-		drv:keyUp("right")
-		drv:keyUp("left")
+		drv:keyPress("up", 1)
+		drv:keyPress("down", 1)
+		drv:keyPress("right", 1)
+		drv:keyPress("left", 1)
 		--drv:keyPress("esc", 1)
 	end
 	return 1

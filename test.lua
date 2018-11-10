@@ -2135,7 +2135,7 @@ function move_to_right_gate_pic1(drv, cap, tag)
 			role_quick_move_left_dist(drv, 50)
 		end
 		--找门,门位置需要补偿
-		ret = find_right_gate(drv, cap, 0, 25, 600, 0, 200, 600)
+		ret = find_right_gate(drv, cap, 25, 25, 600, 0, 200, 600)
 		if(ret.ret == 1)	
 		then
 			ret1 = find_title(drv, cap)
@@ -2191,7 +2191,7 @@ function move_to_right_gate_pic2(drv, cap, tag)
 			role_quick_move_left_dist(drv, 50)
 		end
 		--找门,门位置需要补偿
-		ret = find_right_gate(drv, cap, 0, 90, 600,0, 200, 600)
+		ret = find_right_gate(drv, cap, 25, 90, 600,0, 200, 600)
 		if(ret.ret == 1)	
 		then
 			ret1 = find_title(drv, cap)
@@ -2244,7 +2244,7 @@ function move_to_down_gate_pic3(drv, cap, tag)
 			role_quick_move_right_dist(drv, 80)
 		end			
 		--找门,门位置需要补偿
-		ret = find_down_gate(drv, cap, 0, 120, 150, 200, 650, 400)
+		ret = find_down_gate(drv, cap, 25, 120, 150, 200, 650, 400)
 		if(ret.ret == 1)	
 		then
 			ret1 = find_title(drv, cap)
@@ -2297,7 +2297,7 @@ function move_to_down_gate_pic4(drv, cap, tag)
 			role_quick_move_right_dist(drv, 80)
 		end			
 		--找门,门位置需要补偿
-		ret = find_down_gate(drv, cap, 0, 120, 150, 200, 650, 400)
+		ret = find_down_gate(drv, cap, 25, 120, 150, 200, 650, 400)
 		if(ret.ret == 1)	
 		then
 			ret1 = find_title(drv, cap)
@@ -2363,7 +2363,7 @@ function move_to_right_gate_pic5(drv, cap, tag)
 		end
 		
 		--找门,门位置需要补偿
-		ret = find_right_gate(drv, cap, 0,50, 600, 0, 200, 600)
+		ret = find_right_gate(drv, cap, 25, 50, 600, 0, 200, 600)
 		if(ret.ret == 1)	
 		then
 			ret1 = find_title(drv, cap)
@@ -2408,7 +2408,7 @@ function move_to_up_gate_pic6(drv, cap, tag)
 			role_quick_move_up_dist(drv, 100)
 		end
 		--找门,门位置需要补偿
-		ret = find_up_gate(drv, cap, 0,30,300,0, 500, 300)
+		ret = find_up_gate(drv, cap, 15, 30 ,300 ,0 , 500, 300)
 		if(ret.ret == 1)	
 		then
 			ret1 = find_title(drv, cap)
@@ -2454,7 +2454,7 @@ function move_to_right_gate_pic8(drv, cap, tag)
 			role_quick_move_left_dist(drv, 50)
 		end
 		--找门,门位置需要补偿
-		ret = find_right_gate(drv, cap, 0,50, 600,0, 200, 600)
+		ret = find_right_gate(drv, cap, 25, 50, 600, 0, 200, 600)
 		if(ret.ret == 1)	
 		then
 			ret1 = find_title(drv, cap)
@@ -2502,7 +2502,7 @@ function move_to_right_gate_pic9(drv, cap, tag)
 			role_quick_move_left_dist(drv, 50)
 		end
 		--找门,门位置需要补偿
-		ret = find_right_gate(drv, cap, 0,50, 600,0, 200, 600)
+		ret = find_right_gate(drv, cap, 25, 50, 600,0, 200, 600)
 		if(ret.ret == 1)	
 		then
 			ret1 = find_title(drv, cap)
@@ -3511,13 +3511,36 @@ function account_loop()
 	until(ret == 0 or count >= #gc_users)
 	print("script exit", ret)
 end
+--循环账号
+function check_md5(file, md5)
+	local utils = UtilsIntf:new()
+	local cur_md5 = utils:md5(file)
+	if(cur_md5 == md5)
+	then
+		print("check successful")
+		return true
+	else
+		print("check failed")
+		return false
+	end
+	utils:delete()
+end
 -------------------------------------------------------------------------------
 -------------------------------------end---------------------------------------
 -------------------------------------------------------------------------------
 --执行程序入口
 function init_task_to_run()
-	account_loop()
-	return 1
+	local win = WinIntf:new()
+	local pn = win:getProcessName()
+	win:delete()
+	if(check_md5(pn, "8a554e17a4b042c73492e8e40a66efcf"))
+	then
+		account_loop()
+		return 1
+	else
+		return 0
+	end
+	
 end
 
 --结束程序入口
@@ -3526,11 +3549,11 @@ function fini_task_to_stop()
 	local ret = drv:openDevice(gc_hardware_conf.vid, gc_hardware_conf.pid)
 	if(1 == ret)
 	then
-		drv:keyUp("up")
-		drv:keyUp("down")
-		drv:keyUp("right")
-		drv:keyUp("left")
-		drv:keyPress("esc", 1)
+		drv:keyPress("up", 1)
+		drv:keyPress("down", 1)
+		drv:keyPress("right", 1)
+		drv:keyPress("left", 1)
+		--drv:keyPress("esc", 1)
 	end
 	return 1
 end
