@@ -3747,14 +3747,17 @@ end
 -------------------------------------------------------------------------------
 --执行程序入口
 function init_task_to_run()
+	print("run init_task_to_run start")
 	local win = WinIntf:new()
 	local pn = win:getProcessName()
 	win:delete()
-	if(check_md5(pn, "8a554e17a4b042c73492e8e40a66efcf"))
+	if(check_md5(pn, "7131acc4ddce5409a934334daab16039"))
 	then
 		account_loop()
+		print("run init_task_to_run end1")
 		return 1
 	else
+		print("run init_task_to_run end0")
 		return 0
 	end
 	
@@ -3766,12 +3769,14 @@ function fini_task_to_stop()
 	local ret = drv:openDevice(gc_hardware_conf.vid, gc_hardware_conf.pid)
 	if(1 == ret)
 	then
-		drv:keyPress("up", 1)
-		drv:keyPress("down", 1)
-		drv:keyPress("right", 1)
-		drv:keyPress("left", 1)
+		drv:keyUp("up")
+		drv:keyUp("down")
+		drv:keyUp("right")
+		drv:keyUp("left")
 		--drv:keyPress("esc", 1)
 	end
+	drv:delete()
+	print("run fini_task_to_stop")
 	return 1
 end
 

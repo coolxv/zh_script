@@ -1357,7 +1357,7 @@ function four_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	count = 0	
 	repeat
 		count = count + 1
-		if(count > 8)
+		if(count > 10)
 		then
 			--失败返回到上一阶段
 			drv:keyPress("esc", 1);
@@ -1368,7 +1368,7 @@ function four_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		dump_table(ret)
 		if(ret.ret == 0)
 		then
-			if(count < 5)
+			if(count < 6)
 			then
 				print("move right")
 				drv:keyPress("right", 1)
