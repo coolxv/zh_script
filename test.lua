@@ -2540,8 +2540,10 @@ function pic_1_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	local first = true
 	--确认此图是否完成,未完成重复刷怪
 	ret = confirm_finish_by_color(cap, 1)
-	while(ret == 0)
+	local count = 0
+	while(ret == 0 and count < 10)
 	do
+		count = count + 1
 		hit_monster_1(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
 		first = false
 		ret = confirm_finish_by_color(cap, 1)
@@ -2569,8 +2571,10 @@ function pic_2_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	local first = true
 	--确认此图是否完成,未完成重复刷怪
 	ret = confirm_finish_by_color(cap, 2)
-	while(ret == 0)
+	local count = 0
+	while(ret == 0 and count < 10)
 	do
+		count = count + 1
 		hit_monster_2(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
 		first = false
 		ret = confirm_finish_by_color(cap, 2)
@@ -2590,8 +2594,10 @@ function pic_3_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	local first = true
 	--确认此图是否完成,未完成重复刷怪
 	ret = confirm_finish_by_color(cap, 3)
-	while(ret == 0)
+	local count = 0
+	while(ret == 0 and count < 10)
 	do
+		count = count + 1
 		hit_monster_3(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
 		first = false
 		ret = confirm_finish_by_color(cap, 3)
@@ -2610,10 +2616,13 @@ function pic_4_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	local ret
 	local ret1 = 4
 	local first = true
+	local count  = 0
 	--确认此图是否完成,未完成重复刷怪
 	ret = confirm_finish_by_color(cap, 4)
-	while(ret == 0 and ret1 == 4)
+	
+	while(ret == 0 and ret1 == 4 and count < 10)
 	do
+		count = count + 1
 		hit_monster_4(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
 		first = false
 		ret = confirm_finish_by_color(cap, 4)
@@ -3089,7 +3098,7 @@ function six_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 	--不需要卖装备就继续刷副本
 ::over::
 	--sleep(1)
-	drv:keyPress("f10", 3)
+	drv:keyPress("f10", 5)
 	ctx.back = true
 	return 2;
 end
@@ -3201,9 +3210,13 @@ function six_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	confirm_menu(drv,win, cap, step_conf.win_name, step_conf.comm_tag1)
 	--drv:keyPress("esc", 1)
 ::over::
+	--包满，捡装备
+	sleep(0.5)
+	drv:keyPress('x',5)
+	sleep(0.5)
+	drv:keyPress('x',5)
 	--卖完装备继续刷副本
-	sleep(1)
-	drv:keyPress("f10", 3)
+	drv:keyPress("f10", 5)
 	ctx.back = true
 	return 2;
 end
