@@ -241,6 +241,7 @@ function reset_posi(drv, win, hwind ,adjust)
 	local count = 0
 	if(adjust == true)
 	then
+		--[[
 		repeat
 			--获取客户端位置
 			crect = win:getClientSize(hwind)
@@ -262,7 +263,7 @@ function reset_posi(drv, win, hwind ,adjust)
 				sleep(2)
 			end
 		until(crect.ret > 0 and crect.x == 10 and crect.y == 10)
-		
+		--]]
 		repeat
 			--获取客户端位置
 			count = count + 1
@@ -950,7 +951,7 @@ function first_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 		reset_posi(drv, win, hwind,true)
 		ctx.start = false
 	else
-		reset_posi(drv, win, hwind,false)
+		reset_posi(drv, win, hwind,true)
 	end
 	--启动cap
 	cap:setHwnd(hwind)  ---cap set
@@ -998,15 +999,15 @@ function first_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	elseif(seq == 3)
 	then
 		drv:keyPress("right",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
 		print("select 3 role")
 	elseif(seq == 4)
 	then
 		drv:keyPress("right",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
 		print("select 4 role")
 	elseif(seq == 5)
@@ -1016,160 +1017,160 @@ function first_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	elseif(seq == 6)
 	then
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
 		print("select 6 role")
 	elseif(seq == 7)
 	then
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
 		print("select 7 role")
 	elseif(seq == 8)
 	then
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
 		print("select 8 role")
 	elseif(seq == 9)
 	then
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		print("select 9 role")
 	elseif(seq == 10)
 	then
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
 		print("select 10 role")
 	elseif(seq == 11)
 	then
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
 		print("select 11 role")
 	elseif(seq == 12)
 	then
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
 		print("select 12 role")
 	elseif(seq == 13)
 	then
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		print("select 13 role")
 	elseif(seq == 14)
 	then
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
 		print("select 14 role")
 	elseif(seq == 15)
 	then
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
 		print("select 15 role")
 	elseif(seq == 16)
 	then
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
 		print("select 16 role")	
 	elseif(seq == 17)
 	then
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		print("select 17 role")
 	elseif(seq == 18)
 	then
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
 		print("select 18 role")
 	elseif(seq == 19)
 	then
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
 		print("select 19 role")
 	elseif(seq == 20)
 	then
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("down",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
-		sleep(1)
+		sleep(1.5)
 		drv:keyPress("right",1)
 		print("select 20 role")	
 	else
@@ -1181,7 +1182,7 @@ function first_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	repeat
 		count = count +  1
 		--开始游戏
-		drv:keyPress("space", 2);
+		drv:keyPress("space", 3);
 		sleep(2)
 		ret = confirm_ui_by_size(500,0,300,250, cap, step_conf.tag_21, 0.7, 1)
 	until(ret > 0 or count >= 10)
@@ -2919,12 +2920,17 @@ function pic_7_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		sleep(1)
 		drv:keyPress('NumAdd',1)
 		sleep(0.5)
-		drv:keyPress('x',5)
+		drv:keyPress('x',2)
 		sleep(0.5)
-		drv:keyPress('x',5)
+		drv:keyPress('x',2)
 		sleep(0.5)
-		drv:keyPress('x',5)
-
+		drv:keyPress('x',2)
+		sleep(0.5)
+		drv:keyPress('x',2)
+		sleep(0.5)
+		drv:keyPress('x',2)
+		sleep(0.5)
+		drv:keyPress('x',2)
 		--继续下一轮刷副本	
 		return 0;
 	end
@@ -3286,11 +3292,21 @@ function six_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 	then
 ::redo::	
 		drv:keyPress("f12", 2)
-		sleep(3)
+		local count = 0
+		repeat
+			sleep(3)
+			count = count +  1
+			ret = confirm_ui(cap, step_conf.tag_31, 0.8, 1)
+		until(ret > 0 or count >= 3)	
+		if(ret == 0)
+		then
+			goto redo  --
+		end	
+		--分解装备
 		decompose_money(drv, win, cap, step_conf)
 		--最好在确认下在角色选择的图中了
 		switch_to_role_select(drv, win, cap, step_conf.win_name, step_conf.comm_tag1)
-		local count = 0
+		count = 0
 		repeat
 			sleep(3)
 			count = count +  1
@@ -3428,9 +3444,15 @@ function six_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 ::over::
 	--包满，捡装备
 	sleep(0.5)
-	drv:keyPress('x',5)
+	drv:keyPress('x',2)
 	sleep(0.5)
-	drv:keyPress('x',5)
+	drv:keyPress('x',2)
+	sleep(0.5)
+	drv:keyPress('x',2)
+	sleep(0.5)
+	drv:keyPress('x',2)
+	sleep(0.5)
+	drv:keyPress('x',2)
 	--卖完装备继续刷副本
 	drv:keyPress("f10", 5)
 	ctx.back = true
@@ -3516,6 +3538,7 @@ lc_six_conf ={
 	tag4 = ".\\pic\\6_tag_4.jpg",
 	tag5 = ".\\pic\\6_tag_5.jpg",
 	tag_11 = ".\\pic\\1_tag_1.jpg",
+	tag_31 = ".\\pic\\3_tag_1.jpg",
 }
 -------------------------------------------------------------------------------
 ----------------------------------context--------------------------------------
@@ -3732,6 +3755,7 @@ end
 
 ------------------------------
 --循环账号
+--[[
 function account_loop()
 	local ret = 1
 	local count = 0
@@ -3741,7 +3765,17 @@ function account_loop()
 	until(ret == 0 or count >= #gc_users)
 	print("script exit", ret)
 end
---循环账号
+--]]
+function account_loop()
+	local ret = 1
+	local count = 0
+	repeat
+		count = count + 1
+		ret = account_proc(gc_hardware_conf, gc_users[1])
+	until(ret == 0 or count >= 2)
+	print("script exit", ret)
+end
+--校验防破解
 function check_md5(file, md5)
 	local utils = UtilsIntf:new()
 	local cur_md5 = utils:md5(file)
@@ -3764,7 +3798,7 @@ function init_task_to_run()
 	local win = WinIntf:new()
 	local pn = win:getProcessName()
 	win:delete()
-	if(check_md5(pn, "00d76e627527408af82adbf27498e2c7"))
+	if(check_md5(pn, "124dc78b7981c707f6a3afddba37ef6d"))
 	then
 		account_loop()
 		print("run init_task_to_run end1")
