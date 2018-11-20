@@ -3798,7 +3798,7 @@ function init_task_to_run()
 	local win = WinIntf:new()
 	local pn = win:getProcessName()
 	win:delete()
-	if(check_md5(pn, "124dc78b7981c707f6a3afddba37ef6d"))
+	if(check_md5(pn, "15745042d796accdfe258ac9d0071b9e"))
 	then
 		account_loop()
 		print("run init_task_to_run end1")
