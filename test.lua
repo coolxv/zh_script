@@ -962,7 +962,7 @@ function first_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 		reset_posi(drv, win, hwind,true)
 		ctx.start = false
 	else
-		reset_posi(drv, win, hwind,true)
+		reset_posi(drv, win, hwind,false)
 	end
 	--启动cap
 	cap:setHwnd(hwind)  ---cap set
@@ -2011,7 +2011,7 @@ function hit_monster_6(drv, cap, skills, tag, first)
 	then
 		confirm_title_move_to_up(drv, cap, 5, true)
 		role_quick_move_right_up_dist(drv, 100)
-		role_quick_move_right_dist(drv, 210)
+		role_quick_move_right_dist(drv, 200)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic6"]["first"]) 
 		do
@@ -3175,7 +3175,7 @@ function six_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 	--不需要卖装备就继续刷副本
 ::over::
 	--sleep(1)
-	drv:keyPress("f10", 5)
+	drv:keyPress("f10", 3)
 	ctx.back = true
 	return 2;
 end
@@ -3295,7 +3295,7 @@ function six_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	drv:keyPress('x',2)
 	sleep(0.5)
 	--卖完装备继续刷副本
-	drv:keyPress("f10", 5)
+	drv:keyPress("f10", 3)
 	ctx.back = true
 	return 2;
 end
@@ -3638,7 +3638,7 @@ function init_task_to_run()
 	local win = WinIntf:new()
 	local pn = win:getProcessName()
 	win:delete()
-	if(check_md5(pn, "c8b55b61b7d205dd31df05b9575fff0f"))
+	if(check_md5(pn, "605bebf8ff1ccc065ed23a1a91064928"))
 	then
 		account_loop()
 		print("run init_task_to_run end1")
