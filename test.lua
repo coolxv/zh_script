@@ -2992,7 +2992,7 @@ function five_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 			end
 			ret1 = pic_3_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 			posi = ret
-		elseif(ret == 4 and (posi == 3 or posi == 4 or posi == 5 or posi == 0 or posi == 8))
+		elseif(ret == 4 and (posi == 2 or posi == 3 or posi == 4 or posi == 5 or posi == 0 or posi == 8))
 		then
 			if(ret == posi)
 			then
@@ -3008,7 +3008,7 @@ function five_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 			end
 			ret1 = pic_4_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 			posi = ret
-		elseif(ret == 5 and (posi == 4 or posi == 5 or posi == 6 or posi == 0 or posi == 9))
+		elseif(ret == 5 and (posi == 3 or posi == 4 or posi == 5 or posi == 6 or posi == 0 or posi == 9))
 		then
 			if(ret == posi)
 			then
