@@ -42,7 +42,21 @@ end
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
+g_hwind_table = {}
+function find_windows_handle(win, win_name)
+	local hwind
+	if(g_hwind_table[win_name] == nil or g_hwind_table[win_name] == 0)
+	then
+		g_hwind_table[win_name] = win:findWindow("", win_name)
+	end
+	return g_hwind_table[win_name]
+end
 
+
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 --基于时间,走
 function role_move_left_time(drv, n)
 	drv:keyDown("left")
@@ -324,7 +338,7 @@ function confirm_menu(drv, win, cap, win_name, pic)
 	print("confirm menu esc:")
 	local count = 0
 	--查找客户端
-	local hwind = win:findWindow("", win_name)
+	local hwind = find_windows_handle(win, win_name)
 	--获取客户端位置
 	local crect = win:getClientSize(hwind)
 ::redo::
@@ -350,7 +364,7 @@ function switch_to_role_select(drv, win, cap, win_name, pic)
 	print("switch to role select pic")
 	local count = 0
 	--查找客户端
-	local hwind = win:findWindow("", win_name)
+	local hwind = find_windows_handle(win, win_name)
 	--获取客户端位置
 	local crect = win:getClientSize(hwind)
 ::redo::
@@ -378,7 +392,7 @@ function switch_to_game_over(drv, win, cap, win_name, pic)
 	print("switch to game over pic")
 	local count = 0
 	--查找客户端
-	local hwind = win:findWindow("", win_name)
+	local hwind = find_windows_handle(win, win_name)
 	--获取客户端位置
 	local crect = win:getClientSize(hwind)
 ::redo::
@@ -394,7 +408,7 @@ function switch_to_game_over(drv, win, cap, win_name, pic)
 	mouse_move(drv, win, ctx.hwind, 385, 460)
 	drv:leftClick(3)
 	sleep(5)
-	hwind = win:findWindow("", win_name)
+	hwind = find_windows_handle(win, win_name)
 	if(hwind > 0)
 	then
 		goto redo
@@ -834,7 +848,7 @@ end
 function run_exe(win, cap, exe_path, login_tag, times)
 	local ret
 	--判断是否处在登陆界面
-	local hwind = win:findWindow("", login_tag)
+	local hwind = find_windows_handle(win, login_tag)
 	if(0 == hwind)
 	then
 		--运行游戏客户端
@@ -845,7 +859,7 @@ function run_exe(win, cap, exe_path, login_tag, times)
 			repeat
 				sleep(5)
 				count = count + 1
-				hwind = win:findWindow("", login_tag)
+				hwind = find_windows_handle(win, login_tag)
 				print("run exe to find windows:", count)
 				if(count >= times)
 				then
@@ -872,7 +886,7 @@ end
 function login_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 	--判断是否处在游戏界面
 	print("to find game window ", step_conf.win_name)
-	local hwind = win:findWindow("", step_conf.win_name)
+	local hwind = find_windows_handle(win, step_conf.win_name)
 	if(hwind > 0)
 	then
 		ctx.login = false
@@ -935,7 +949,7 @@ function login_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	--ctx set
 	ctx.start = true --表示从登陆界面过来的
 	ctx.login = true
-	sleep(60)
+	sleep(80)
 	return 1
 end
 -------------------------------------------------------------------------------
@@ -948,13 +962,13 @@ function first_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 	--查找客户端
 	repeat
 		count = count + 1
-		hwind = win:findWindow("", step_conf.win_name)
+		hwind = find_windows_handle(win, step_conf.win_name)
 		if(count > 30)
 		then
 			return 5 
 		end
 		print("to find game window failed, count", count)
-		if(hwind == 0) then sleep(5) end
+		if(hwind == 0) then sleep(20) end
 	until(hwind > 0 )
 	--移动界面
 	if(ctx.start == true)--从登陆界面过来的，要调整窗口才行
@@ -2889,7 +2903,7 @@ function back_to_town(drv, win, cap, win_name, pic)
 	print("switch to role select pic")
 	local count = 0
 	--查找客户端
-	local hwind = win:findWindow("", win_name)
+	local hwind = find_windows_handle(win, win_name)
 	--获取客户端位置
 	local crect = win:getClientSize(hwind)
 	--移动鼠标
@@ -3638,7 +3652,7 @@ function init_task_to_run()
 	local win = WinIntf:new()
 	local pn = win:getProcessName()
 	win:delete()
-	if(check_md5(pn, "605bebf8ff1ccc065ed23a1a91064928"))
+	if(check_md5(pn, "59b5715748b67523ca45f50a32fb6627"))
 	then
 		account_loop()
 		print("run init_task_to_run end1")
