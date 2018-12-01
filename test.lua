@@ -1,13 +1,17 @@
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
+--[[
 function sleep(n)
 	local t0 = os.clock()
 	local t1
 	repeat 
 		t1 = os.clock()
 	until(t1-t0 >= n )
-
+end
+--]]
+function sleep(n)
+	winSleep(n*1000 + gc_software_conf.delay_time)
 end
 function wheels_move_down(drv, n)
 	for i=0,n,1 do
@@ -916,7 +920,7 @@ function login_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	then
 		--µ«¬Ω1
 		print("to login 1")
-		drv:moveTo(crect.x + 900, crect.y + 530)
+		drv:moveTo(crect.x + 830, crect.y + 495)
 		drv:leftClick(1)
 		sleep(5)
 	end
@@ -928,14 +932,14 @@ function login_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	until(ret > 0 and ret1 > 0)
 	
 	-- ‰»Î’À∫≈
-	drv:moveTo(crect.x + 1110, crect.y + 350)
+	drv:moveTo(crect.x + 1025, crect.y + 325)
 	sleep(1)
 	drv:leftClick(2)
 	drv:keyPress("delete", 15);
 	drv:simulationPressKey(role_conf.user)
 
 	-- ‰»Î√‹¬Î
-	drv:moveTo(crect.x + 1110, crect.y + 400)
+	drv:moveTo(crect.x + 1025, crect.y + 375)
 	sleep(1)
 	drv:leftClick(2)
 	drv:keyPress("delete", 15);
@@ -943,7 +947,7 @@ function login_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	
 	--µ«¬Ω2
 	print("to login 2")
-	drv:moveTo(crect.x + 1125, crect.y + 510)
+	drv:moveTo(crect.x + 1025, crect.y + 485)
 	sleep(1)
 	drv:leftClick(2)
 	--ctx set
