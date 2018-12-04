@@ -1,15 +1,15 @@
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
---[[
-function sleep(n)
+
+function sleep_run(n)
 	local t0 = os.clock()
 	local t1
 	repeat 
 		t1 = os.clock()
 	until(t1-t0 >= n )
 end
---]]
+
 function sleep(n)
 	winSleep(n*1000 + gc_software_conf.delay_time)
 end
@@ -145,13 +145,13 @@ function role_quick_move_right_dist(drv, n)
 	print("move quick right by dist", v)
 end
 function role_quick_move_up_dist(drv, n)
-	local v = n/120
+	local v = n/125
 	if(v < 0.1)
 	then 
 		v = 0.15
 	elseif(v > 0.1 and v < 0.2)
 	then
-		v = 0.25
+		v = 0.23
 	end
 	drv:keyDown("up")
 	sleep(v)
@@ -159,13 +159,13 @@ function role_quick_move_up_dist(drv, n)
 	print("move quick up by dist", v)
 end
 function role_quick_move_down_dist(drv, n)
-	local v = n/120
+	local v = n/125
 	if(v < 0.1)
 	then 
 		v = 0.15
 	elseif(v > 0.1 and v < 0.2)
 	then
-		v = 0.25 
+		v = 0.23 
 	end
 	drv:keyDown("down")
 	sleep(v)
@@ -686,7 +686,7 @@ end
 --找地上装备
 function find_money(drv, cap)
 	local ret
-	ret = cap:findColorByTvBySize(0, 85, 720, 515, 0x00ffff, 0x00fefe, 28, 28, 20,15)
+	ret = cap:findColorByTvBySize(0, 85, 720, 515, 0x00ffff, 0x00fefe, 28, 28, 80,18)
 	if(ret.ret == 1)
 	then
 		 --门位置补偿plus像素
@@ -1848,6 +1848,7 @@ function move_to_money(drv, cap)
 		else
 			role_quick_move_left_dist(drv, -retx)
 		end
+		sleep_run(0.1)
 		print("move to money to", retx, rety)
 		return 1
 	end
@@ -2029,7 +2030,7 @@ function hit_monster_6(drv, cap, skills, tag, first)
 	then
 		confirm_title_move_to_up(drv, cap, 5, true)
 		role_quick_move_right_up_dist(drv, 100)
-		role_quick_move_right_dist(drv, 200)
+		role_quick_move_right_dist(drv, 180)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic6"]["first"]) 
 		do
@@ -2141,7 +2142,17 @@ function pick_money(drv, cap)
 		then
 			drv:keyPress('x',1)
 		end
-	until(ret == 0 or count > 6)
+	until(ret == 0 or count > 15)
+	confirm_title_move_to_right(drv, cap, 100, false)
+	role_quick_move_down_dist(drv, 50)
+	repeat
+		count = count + 1
+		ret = move_to_money(drv, cap)
+		if(ret == 1)
+		then
+			drv:keyPress('x',1)
+		end
+	until(ret == 0 or count > 15)
 	print("pick up money finish")
 end
 -------------move to gate----------------
@@ -2825,6 +2836,7 @@ function pic_7_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		drv:keyPress('x',2)
 		sleep(0.5)
 		drv:keyPress('x',2)
+		pick_money(drv, cap)
 		--继续下一轮刷副本	
 		return 0;
 	end
@@ -3656,7 +3668,7 @@ function init_task_to_run()
 	local win = WinIntf:new()
 	local pn = win:getProcessName()
 	win:delete()
-	if(check_md5(pn, "59b5715748b67523ca45f50a32fb6627"))
+	if(check_md5(pn, "ac17cc1c49f4a09d92b10f7fc50ca321"))
 	then
 		account_loop()
 		print("run init_task_to_run end1")
