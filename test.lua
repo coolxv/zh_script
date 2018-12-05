@@ -3587,7 +3587,10 @@ function account_proc(conf,user)
 	local utils = UtilsIntf:new()
 	--
 	--local ret = 1
-	local ret = drv:openDevice(conf.vid, conf.pid)
+	local ret = drv:restart()
+	print("restart:", ret)
+	sleep_run(5)
+	ret = drv:openDevice(conf.vid, conf.pid)
 	if(1 == ret)
 	then
 		print("driver open successful")
@@ -3668,7 +3671,7 @@ function init_task_to_run()
 	local win = WinIntf:new()
 	local pn = win:getProcessName()
 	win:delete()
-	if(check_md5(pn, "ac17cc1c49f4a09d92b10f7fc50ca321"))
+	if(check_md5(pn, "5d3d216e32563873f9d978d37465fe53"))
 	then
 		account_loop()
 		print("run init_task_to_run end1")
