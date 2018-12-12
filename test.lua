@@ -1369,11 +1369,11 @@ function four_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	local count = 0
 	repeat
 		count = count + 1
-		if(count > 15)
+		if(count > 20)
 		then
 			--失败返回到上一阶段
 			drv:keyPress("esc", 1);
-			sleep(1)
+			sleep_run(1)
 			return 2 
 		end
 		ret = cap:findPicByTv(step_conf.tag2, 0.8)
@@ -1388,11 +1388,11 @@ function four_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	count = 0	
 	repeat
 		count = count + 1
-		if(count > 10)
+		if(count > 15)
 		then
 			--失败返回到上一阶段
 			drv:keyPress("esc", 1);
-			sleep(1)
+			sleep_run(1)
 			return 2 
 		end		
 		ret = cap:findPicByTv(step_conf.tag3, 0.8)
@@ -1407,10 +1407,10 @@ function four_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 				print("move left")
 				drv:keyPress("left", 1)
 			end
-			sleep(1)
+			sleep_run(1.5)
 		end
 	until(ret.ret > 0 )	
-	sleep(1)
+	sleep_run(1)
 	ret = drv:keyPress("space", 3)
 	return 1
 end
@@ -3586,10 +3586,10 @@ function account_proc(conf,user)
 	local drv = DrvIntf:new()
 	local utils = UtilsIntf:new()
 	--
-	--local ret = 1
-	local ret = drv:restart()
-	print("restart:", ret)
-	sleep_run(5)
+	local ret
+	--local ret = drv:restart()
+	--print("restart:", ret)
+	--sleep_run(5)
 	ret = drv:openDevice(conf.vid, conf.pid)
 	if(1 == ret)
 	then
@@ -3690,9 +3690,11 @@ function fini_task_to_stop()
 	if(1 == ret)
 	then
 		drv:keyUpAll()
+		print("run fini_task_to_stop successful")
+	else
+		print("run fini_task_to_stop failed")
 	end
 	drv:delete()
-	print("run fini_task_to_stop")
 	return 1
 end
 
