@@ -311,7 +311,7 @@ function reset_posi(drv, win, hwind ,adjust)
 		--激活
 		drv:moveTo(crect.x + 250, crect.y + 10)
 		sleep(0.5)
-		drv:leftClick(1)
+		drv:leftClick(2)
 	end
 
 	return crect
@@ -635,8 +635,9 @@ function find_boss(cap)
 	end
 	if(ret.ret == 1)
 	then
-		 --boss位置补偿
-		--ret.y = ret.y + 20
+		--boss位置补偿
+		ret.y = ret.y + 5
+		ret.x = ret.x + 20
 		print("find boss", ret.x, ret.y)
 	else
 		print("not find boss")
@@ -656,7 +657,8 @@ function find_monster(cap)
 	if(ret.ret == 1)
 	then
 		 --怪物位置补偿35像素
-		--ret.y = ret.y + 10
+		ret.y = ret.y + 10
+		ret.x = ret.x + 19
 		print("find monster", ret.x, ret.y)
 	else
 		print("not find monster")
@@ -675,7 +677,8 @@ function find_tower(cap)
 	if(ret.ret == 1)
 	then
 		 --塔位置补偿35像素
-		--ret.y = ret.y + 10
+		ret.y = ret.y + 10
+		ret.x = ret.x + 20
 		print("find tower", ret.x, ret.y)
 	else
 		print("not find tower")
@@ -690,7 +693,7 @@ function find_money(drv, cap)
 	if(ret.ret == 1)
 	then
 		 --门位置补偿plus像素
-		ret.y = ret.y + 5
+		ret.y = ret.y + 10
 		ret.x = ret.x + 10
 		print("find money", ret.x, ret.y)
 	else
@@ -738,8 +741,8 @@ function find_title(drv, cap)
 	end		
 
 	 --人物位置补偿150像素
-	ret.y = ret.y + 150
-	ret.x = ret.x + 15
+	ret.y = ret.y + 165
+	ret.x = ret.x + 18
 	print("find title", ret.x, ret.y)
 	--dump_table(ret)
 	return ret
@@ -1231,7 +1234,8 @@ end
 function second_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 	local ret = 0
 	local ret1 = 0
-
+	--获取焦点
+	reset_posi(drv, win, ctx.hwind,false)
 	--确认界面
 	if(ctx.login == true)
 	then
@@ -1296,6 +1300,8 @@ end
 -------------------------------------------------------------------------------
 function three_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 	local ret = 0
+	--获取焦点
+	reset_posi(drv, win, ctx.hwind,false)
 	--确认界面
 	if(ctx.login == true)
 	then
@@ -1342,6 +1348,9 @@ end
 -------------------------------------------------------------------------------
 function four_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 	local ret = 0
+	
+	--获取焦点
+	reset_posi(drv, win, ctx.hwind,false)
 	--恢复back
 	if(ctx.back == true)
 	then
@@ -1385,10 +1394,11 @@ function four_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		end
 	until(ret.ret > 0 )	
 	--选择王者模式
+	reset_posi(drv, win, ctx.hwind,false)
 	count = 0	
 	repeat
 		count = count + 1
-		if(count > 15)
+		if(count > 20)
 		then
 			--失败返回到上一阶段
 			drv:keyPress("esc", 1);
@@ -1403,11 +1413,18 @@ function four_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 			then
 				print("move right")
 				drv:keyPress("right", 1)
+			elseif(count >= 6 and count < 11)
+			then
+				print("move left")
+				drv:keyPress("left", 1)
+			elseif(count >= 11 and count < 16)
+			then
+				print("move right")
+				drv:keyPress("right", 1)
 			else
 				print("move left")
 				drv:keyPress("left", 1)
 			end
-			sleep_run(1.5)
 		end
 	until(ret.ret > 0 )	
 	sleep_run(1)
@@ -1419,6 +1436,8 @@ end
 -------------------------------------------------------------------------------
 function five_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 	local ret = 0
+	--获取焦点
+	reset_posi(drv, win, ctx.hwind,false)
 	--确认界面
 	if(ctx.back == false)
 	then
@@ -1680,9 +1699,9 @@ function move_to_boss(drv, cap, xt, yt)
 			if(retx > xt)
 			then
 				--怪物在右侧
-				if(retx > 300)
+				if(retx > 250)
 				then
-					role_quick_move_right_dist(drv, retx - 150)
+					role_quick_move_right_dist(drv, retx - 100)
 				else
 					role_move_right_dist(drv,0)
 				end
@@ -1691,9 +1710,9 @@ function move_to_boss(drv, cap, xt, yt)
 			if(-retx > xt)
 			then
 				--怪物在左侧
-				if(-retx > 350)
+				if(-retx > 250)
 				then
-					role_quick_move_left_dist(drv, -retx - 200)
+					role_quick_move_left_dist(drv, -retx - 100)
 				else
 					role_move_left_dist(drv,0)
 				end			
@@ -1741,7 +1760,7 @@ function move_to_monster(drv, cap, xt, yt)
 				--怪物在右侧
 				if(retx > 125)
 				then
-					role_quick_move_right_dist(drv, retx - 50)
+					role_quick_move_right_dist(drv, retx - 75)
 				else
 					role_move_right_dist(drv,0)
 				end
@@ -1796,9 +1815,9 @@ function move_to_tower(drv, cap, xt, yt)
 			if(retx > xt)
 			then
 				--怪物在右侧
-				if(retx > 100)
+				if(retx > 125)
 				then
-					role_quick_move_right_dist(drv, retx - 50)
+					role_quick_move_right_dist(drv, retx - 75)
 				else
 					role_move_right_dist(drv,0)
 				end
@@ -1825,6 +1844,8 @@ end
 function move_to_money(drv, cap)
 	local ret
 	local ret1
+	local first = true
+::redo::
 	local retx = 0
 	local rety = 0
 	ret = find_money(drv, cap)
@@ -1832,23 +1853,49 @@ function move_to_money(drv, cap)
 	then
 		--人物必须找到
 		ret1 = find_title(drv, cap)
-		--y方向移动
+		--计算移动距离
 		rety = ret.y - ret1.y
-		if(rety > 0)
-		then
-			role_quick_move_down_dist(drv, rety)
-		else
-			role_quick_move_up_dist(drv, -rety)
-		end
-		--x方向移动
 		retx = ret.x - ret1.x
-		if(retx > 0)
+		if(retx < 8 and rety < 8 and first == false)
 		then
-			role_quick_move_right_dist(drv, retx )
-		else
-			role_quick_move_left_dist(drv, -retx)
+			goto over
 		end
-		sleep_run(0.1)
+		
+		if(first == true)
+		then
+			--x方向移动
+			if(rety > 0)
+			then
+				role_quick_move_down_dist(drv, rety)
+			else
+				role_quick_move_up_dist(drv, -rety)
+			end
+			--x方向移动
+			if(retx > 0)
+			then
+				role_quick_move_right_dist(drv, retx )
+			else
+				role_quick_move_left_dist(drv, -retx)
+			end
+		else
+			--x方向移动
+			if(rety > 0)
+			then
+				role_move_down_dist(drv, rety)
+			else
+				role_move_up_dist(drv, -rety)
+			end
+			--x方向移动
+			if(retx > 0)
+			then
+				role_move_right_dist(drv, retx )
+			else
+				role_move_left_dist(drv, -retx)
+			end
+		end
+		first = false
+		goto redo
+::over::
 		print("move to money to", retx, rety)
 		return 1
 	end
@@ -1867,6 +1914,7 @@ function hit_monster_1(drv, cap, skills, tag, first)
 		--加buff
 		--移动到指定位置
 		confirm_title_move_to_left(drv, cap, 5, false)
+		--role_quick_move_right_dist(drv, 100)
 		local count = 0
 		repeat
 			count = count + 1
@@ -1900,8 +1948,8 @@ function hit_monster_2(drv, cap, skills, tag, first)
 	if(first == true)
 	then
 		--移动到指定位置
-		confirm_title_move_to_up(drv, cap, 5, true)
-		role_quick_move_right_dist(drv, 300)
+		confirm_title_move_to_down(drv, cap, 5, true)
+		role_quick_move_right_up_dist(drv, 300)
 		for k,v in ipairs(skills["pic2"]["first"]) 
 		do
 			use_mskill(drv, skills, v, 2)
@@ -1955,7 +2003,7 @@ function hit_monster_4(drv, cap, skills, tag, first)
 	if(first == true)
 	then
 		--移动到指定位置
-		confirm_title_move_to_down(drv, cap, 5, true)
+		confirm_title_move_to_up(drv, cap, 5, true)
 		role_quick_move_right_down_dist(drv, 250)
 		role_move_left_dist(drv, 10)
 		--移动到指定位置
@@ -1984,8 +2032,8 @@ function hit_monster_5(drv, cap, skills, tag, first)
 	if(first == true)
 	then
 		--向左移动到指定位置打塔
-		confirm_title_move_to_down(drv, cap, 5, true)
-		role_quick_move_left_down_dist(drv, 200)
+		confirm_title_move_to_up(drv, cap, 5, true)
+		role_quick_move_left_down_dist(drv, 250)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic5"]["first"]) 
 		do
@@ -2028,9 +2076,9 @@ function hit_monster_6(drv, cap, skills, tag, first)
 	--移动到指定位置
 	if(first == true)
 	then
-		confirm_title_move_to_up(drv, cap, 5, true)
-		role_quick_move_right_up_dist(drv, 100)
-		role_quick_move_right_dist(drv, 180)
+		confirm_title_move_to_up(drv, cap, 50, true)
+		--role_quick_move_right_up_dist(drv, 50)
+		role_quick_move_right_dist(drv, 150)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic6"]["first"]) 
 		do
@@ -2140,19 +2188,23 @@ function pick_money(drv, cap)
 		ret = move_to_money(drv, cap)
 		if(ret == 1)
 		then
+			sleep_run(0.5)
 			drv:keyPress('x',1)
 		end
 	until(ret == 0 or count > 15)
-	confirm_title_move_to_right(drv, cap, 100, false)
+	drv:keyPress('x',1)
+	confirm_title_move_to_right(drv, cap, 150, false)
 	role_quick_move_down_dist(drv, 50)
 	repeat
 		count = count + 1
 		ret = move_to_money(drv, cap)
 		if(ret == 1)
 		then
+			sleep_run(0.5)
 			drv:keyPress('x',1)
 		end
 	until(ret == 0 or count > 15)
+	drv:keyPress('x',1)
 	print("pick up money finish")
 end
 -------------move to gate----------------
@@ -2171,7 +2223,7 @@ function move_to_right_gate_pic1(drv, cap, tag)
 		
 		if(ret1.x >= 400 and ret1.x <= 600)
 		then
-			role_quick_move_right_dist(drv, 250)
+			role_quick_move_right_dist(drv, 400)
 		elseif(ret1.x < 400)
 		then
 			role_quick_move_right_dist(drv, 500)
@@ -2228,12 +2280,12 @@ function move_to_right_gate_pic2(drv, cap, tag)
 		ret1 = find_title(drv, cap)
 		if(ret1.y <= 300)
 		then
-			role_quick_move_down_dist(drv, 300)
+			role_quick_move_down_dist(drv, 450)
 		end
 		
 		if(ret1.x >= 400 and ret1.x <= 600)
 		then
-			role_quick_move_right_dist(drv, 300)
+			role_quick_move_right_dist(drv, 400)
 		elseif(ret1.x < 400)
 		then
 			role_quick_move_right_dist(drv, 500)
@@ -2824,18 +2876,10 @@ function pic_7_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		--捡装备
 		sleep(1)
 		drv:keyPress('NumAdd',1)
-		sleep(0.5)
-		drv:keyPress('x',2)
-		sleep(0.5)
-		drv:keyPress('x',2)
-		sleep(0.5)
-		drv:keyPress('x',2)
-		sleep(0.5)
-		drv:keyPress('x',2)
-		sleep(0.5)
-		drv:keyPress('x',2)
-		sleep(0.5)
-		drv:keyPress('x',2)
+		sleep(1)
+		drv:keyDown('x')
+		sleep(3)
+		drv:keyUp('x')
 		pick_money(drv, cap)
 		--继续下一轮刷副本	
 		return 0;
