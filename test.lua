@@ -289,11 +289,11 @@ function reset_posi(drv, win, hwind ,adjust)
 			print("before position2:", crect.x, crect.y)
 			--dump_table(crect)
 			--移动游戏客户端
-			drv:moveTo(crect.x + 250, crect.y + 10)
+			drv:moveTo(crect.x + 400, crect.y + 10)
 			sleep(0.5)
 			drv:leftDown()
 			sleep(1)
-			drv:moveTo(250, 10)
+			drv:moveTo(400, 10)
 			sleep(0.5)
 			drv:leftUp()
 			--重新获取客户端位置
@@ -309,7 +309,7 @@ function reset_posi(drv, win, hwind ,adjust)
 		crect = win:getClientSize(hwind)
 		print("current position:", crect.x, crect.y)
 		--激活
-		drv:moveTo(crect.x + 250, crect.y + 10)
+		drv:moveTo(crect.x + 400, crect.y + 10)
 		sleep(0.5)
 		drv:leftClick(2)
 	end
@@ -1251,6 +1251,9 @@ function second_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 			ctx.login = true
 		end		
 	end
+	
+	--获取焦点
+	reset_posi(drv, win, ctx.hwind,false)
 	--是在此界面
 	if(ret == 1)
 	then
@@ -1390,6 +1393,7 @@ function four_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		if(ret.ret == 0)
 		then
 			drv:keyPress("down", 1)
+			print("move down")
 			sleep(1)
 		end
 	until(ret.ret > 0 )	
@@ -1426,6 +1430,7 @@ function four_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 				drv:keyPress("left", 1)
 			end
 		end
+		sleep(1.5)
 	until(ret.ret > 0 )	
 	sleep_run(1)
 	ret = drv:keyPress("space", 3)
@@ -1504,7 +1509,7 @@ function use_bskill(drv, skills, s)
 		drv:keyPress(v,3)
 		print("bskill 2:",v)
 	end
-	t = {'y', 'w', 'e', 'r', 't', 'q'}
+	t = {'r', 'y', 'w', 'e', 't', 'q'}
 	for k,v in ipairs(t) 
 	do
 		drv:keyPress(v,1)
@@ -1845,22 +1850,30 @@ function move_to_money(drv, cap)
 	local ret
 	local ret1
 	local first = true
+	local count = 0
 ::redo::
 	local retx = 0
 	local rety = 0
 	ret = find_money(drv, cap)
 	if(ret.ret == 1)
 	then
+		count = count + 1
 		--人物必须找到
 		ret1 = find_title(drv, cap)
 		--计算移动距离
 		rety = ret.y - ret1.y
 		retx = ret.x - ret1.x
+		--
+		if(count > 3)
+		then
+			goto over
+		end
+		--
 		if(retx < 8 and rety < 8 and first == false)
 		then
 			goto over
 		end
-		
+
 		if(first == true)
 		then
 			--x方向移动
@@ -1913,8 +1926,7 @@ function hit_monster_1(drv, cap, skills, tag, first)
 	then
 		--加buff
 		--移动到指定位置
-		confirm_title_move_to_left(drv, cap, 5, false)
-		--role_quick_move_right_dist(drv, 100)
+		confirm_title_move_to_down(drv, cap, 5, false)
 		local count = 0
 		repeat
 			count = count + 1
@@ -1949,7 +1961,7 @@ function hit_monster_2(drv, cap, skills, tag, first)
 	then
 		--移动到指定位置
 		confirm_title_move_to_down(drv, cap, 5, true)
-		role_quick_move_right_up_dist(drv, 300)
+		role_quick_move_right_dist(drv, 250)
 		for k,v in ipairs(skills["pic2"]["first"]) 
 		do
 			use_mskill(drv, skills, v, 2)
@@ -1975,8 +1987,8 @@ function hit_monster_3(drv, cap, skills, tag, first)
 	if(first == true)
 	then
 		--移动到指定位置
-		confirm_title_move_to_up(drv, cap, 50, true)
-		role_quick_move_right_dist(drv, 300)
+		confirm_title_move_to_up(drv, cap, 5, true)
+		role_quick_move_right_dist(drv, 310)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic3"]["first"]) 
 		do
@@ -2004,7 +2016,7 @@ function hit_monster_4(drv, cap, skills, tag, first)
 	then
 		--移动到指定位置
 		confirm_title_move_to_up(drv, cap, 5, true)
-		role_quick_move_right_down_dist(drv, 250)
+		role_quick_move_right_down_dist(drv, 270)
 		role_move_left_dist(drv, 10)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic4"]["first"]) 
@@ -2033,7 +2045,7 @@ function hit_monster_5(drv, cap, skills, tag, first)
 	then
 		--向左移动到指定位置打塔
 		confirm_title_move_to_up(drv, cap, 5, true)
-		role_quick_move_left_down_dist(drv, 250)
+		role_quick_move_left_down_dist(drv, 270)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic5"]["first"]) 
 		do
@@ -2076,9 +2088,9 @@ function hit_monster_6(drv, cap, skills, tag, first)
 	--移动到指定位置
 	if(first == true)
 	then
-		confirm_title_move_to_up(drv, cap, 50, true)
-		--role_quick_move_right_up_dist(drv, 50)
-		role_quick_move_right_dist(drv, 150)
+		confirm_title_move_to_up(drv, cap, 5, true)
+		--role_quick_move_right_up_dist(drv, 200)
+		role_quick_move_right_dist(drv, 265)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic6"]["first"]) 
 		do
@@ -2108,7 +2120,7 @@ function hit_monster_7(drv, cap, skills, first)
 	if(first == true)
 	then
 		--移动到指定位置
-		confirm_title_move_to_right(drv, cap, 50, false)
+		confirm_title_move_to_right(drv, cap, 5, false)
 		for k,v in ipairs(skills["pic7"]["first"]) 
 		do
 			use_dskill(drv, skills, v)
@@ -2182,29 +2194,34 @@ end
 function pick_money(drv, cap)
 	local ret
 	local count = 0
+	local find = false
 	print("pick up money")
 	repeat
 		count = count + 1
 		ret = move_to_money(drv, cap)
 		if(ret == 1)
 		then
-			sleep_run(0.5)
+			find = true
+			sleep_run(0.3)
 			drv:keyPress('x',1)
 		end
-	until(ret == 0 or count > 15)
-	drv:keyPress('x',1)
-	confirm_title_move_to_right(drv, cap, 150, false)
-	role_quick_move_down_dist(drv, 50)
+	until(ret == 0 or count > 2)
+	confirm_title_move_to_right(drv, cap, 75, false)
+	role_quick_move_down_dist(drv, 75)
 	repeat
 		count = count + 1
 		ret = move_to_money(drv, cap)
 		if(ret == 1)
 		then
-			sleep_run(0.5)
+			find = true
+			sleep_run(0.3)
 			drv:keyPress('x',1)
 		end
-	until(ret == 0 or count > 15)
-	drv:keyPress('x',1)
+	until(ret == 0 or count > 4)
+	if(find == true)
+	then
+		drv:keyPress('x',1)
+	end
 	print("pick up money finish")
 end
 -------------move to gate----------------
@@ -2223,16 +2240,16 @@ function move_to_right_gate_pic1(drv, cap, tag)
 		
 		if(ret1.x >= 400 and ret1.x <= 600)
 		then
-			role_quick_move_right_dist(drv, 400)
+			role_quick_move_right_dist(drv, 450)
 		elseif(ret1.x < 400)
 		then
-			role_quick_move_right_dist(drv, 500)
+			role_quick_move_right_dist(drv, 550)
 		elseif(ret1.x >= 675)
 		then
-			role_quick_move_left_dist(drv, 50)
+			role_quick_move_left_dist(drv, 75)
 		end
 		--找门,门位置需要补偿
-		ret = find_right_gate(drv, cap, 25, 25, 600, 0, 200, 600)
+		ret = find_right_gate(drv, cap, 25, 35, 600, 0, 200, 600)
 		if(ret.ret == 1)	
 		then
 			ret1 = find_title(drv, cap)
@@ -2280,15 +2297,15 @@ function move_to_right_gate_pic2(drv, cap, tag)
 		ret1 = find_title(drv, cap)
 		if(ret1.y <= 300)
 		then
-			role_quick_move_down_dist(drv, 450)
+			role_quick_move_down_dist(drv, 100)
 		end
 		
 		if(ret1.x >= 400 and ret1.x <= 600)
 		then
-			role_quick_move_right_dist(drv, 400)
+			role_quick_move_right_dist(drv, 450)
 		elseif(ret1.x < 400)
 		then
-			role_quick_move_right_dist(drv, 500)
+			role_quick_move_right_dist(drv, 550)
 		elseif(ret1.x >= 675)
 		then
 			role_quick_move_left_dist(drv, 50)
@@ -2353,7 +2370,7 @@ function move_to_down_gate_pic3(drv, cap, tag)
 			role_quick_move_right_dist(drv, 120)
 		end			
 		--找门,门位置需要补偿
-		ret = find_down_gate(drv, cap, 25, 120, 150, 200, 650, 400)
+		ret = find_down_gate(drv, cap, 25, 130, 150, 200, 650, 400)
 		if(ret.ret == 1)	
 		then
 			ret1 = find_title(drv, cap)
@@ -2412,7 +2429,7 @@ function move_to_down_gate_pic4(drv, cap, tag)
 			role_quick_move_right_dist(drv, 120)
 		end			
 		--找门,门位置需要补偿
-		ret = find_down_gate(drv, cap, 25, 120, 150, 200, 650, 400)
+		ret = find_down_gate(drv, cap, 25, 130, 150, 200, 650, 400)
 		if(ret.ret == 1)	
 		then
 			ret1 = find_title(drv, cap)
@@ -2477,10 +2494,10 @@ function move_to_right_gate_pic5(drv, cap, tag)
 		--
 		if(ret1.x <= 600)
 		then
-			role_quick_move_right_dist(drv, 400)
+			role_quick_move_right_dist(drv, 550)
 		elseif(ret1.x >= 700)
 		then
-			role_quick_move_left_dist(drv, 50)
+			role_quick_move_left_dist(drv, 150)
 		end
 		
 		--找门,门位置需要补偿
@@ -3196,7 +3213,8 @@ function six_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 	local count = 0
 	local ret
 	local ret1
-	
+	--获取焦点
+	reset_posi(drv, win, ctx.hwind,false)
 	--清除特殊修理装备
 	ctx.login = false
 	--查找德利拉商店,存在就不需要esc
@@ -3630,6 +3648,8 @@ function account_proc(conf,user)
 	local drv = DrvIntf:new()
 	local utils = UtilsIntf:new()
 	--
+	drv:keyUpAll()
+	print("key up all")
 	local ret
 	--local ret = drv:restart()
 	--print("restart:", ret)
@@ -3715,7 +3735,7 @@ function init_task_to_run()
 	local win = WinIntf:new()
 	local pn = win:getProcessName()
 	win:delete()
-	if(check_md5(pn, "5d3d216e32563873f9d978d37465fe53"))
+	if(check_md5(pn, "fc862fff2b5758a23a6a87e5df7edaa6"))
 	then
 		account_loop()
 		print("run init_task_to_run end1")
@@ -3733,6 +3753,8 @@ function fini_task_to_stop()
 	local ret = drv:openDevice(gc_hardware_conf.vid, gc_hardware_conf.pid)
 	if(1 == ret)
 	then
+		drv:keyUpAll()
+		print("key up all")
 		drv:keyUpAll()
 		print("run fini_task_to_stop successful")
 	else
