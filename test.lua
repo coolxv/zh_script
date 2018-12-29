@@ -1851,6 +1851,8 @@ function move_to_money(drv, cap)
 	local ret1
 	local first = true
 	local count = 0
+	local lastx = 0
+	local lasty = 0
 ::redo::
 	local retx = 0
 	local rety = 0
@@ -1858,18 +1860,33 @@ function move_to_money(drv, cap)
 	if(ret.ret == 1)
 	then
 		count = count + 1
+		if(first == false)
+		then
+			lastx = ret1.x
+			lasty = ret1.y
+		end
 		--人物必须找到
 		ret1 = find_title(drv, cap)
+		if(first == false and count >= 3)
+		then
+			if((math.abs(lastx - ret1.x) <= 2) and (math.abs(lasty - ret1.y) <= 2))
+			then
+				drv:keyPress('x',1)
+				role_quick_move_down_dist(drv, 50)
+				role_quick_move_right_dist(drv, 50)
+				ret1 = find_title(drv, cap)
+			end
+		end		
 		--计算移动距离
 		rety = ret.y - ret1.y
 		retx = ret.x - ret1.x
 		--
-		if(count > 3)
+		if(count >= 3)
 		then
 			goto over
 		end
 		--
-		if(retx < 8 and rety < 8 and first == false)
+		if(retx < 10 and rety < 10 and first == false)
 		then
 			goto over
 		end
@@ -2205,9 +2222,10 @@ function pick_money(drv, cap)
 			sleep_run(0.3)
 			drv:keyPress('x',1)
 		end
-	until(ret == 0 or count > 2)
-	confirm_title_move_to_right(drv, cap, 75, false)
+	until(ret == 0 or count >= 3)
 	role_quick_move_down_dist(drv, 75)
+	role_quick_move_right_dist(drv, 75)
+	count = 0
 	repeat
 		count = count + 1
 		ret = move_to_money(drv, cap)
@@ -2217,7 +2235,7 @@ function pick_money(drv, cap)
 			sleep_run(0.3)
 			drv:keyPress('x',1)
 		end
-	until(ret == 0 or count > 4)
+	until(ret == 0 or count >= 3)
 	if(find == true)
 	then
 		drv:keyPress('x',1)
