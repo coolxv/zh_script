@@ -655,6 +655,15 @@ function find_monster(cap)
 	then
 		ret = cap:findColorByTv(0x85fffa, 0x85faf0, 15, 15, 60, 5)
 	end
+	--
+	if(ret.ret == 0)
+	then
+		ret = cap:findColorByTv(0x97dfff, 0x95a0f0, 39, 33, 650, 15)
+		if(ret.ret == 0)
+		then
+			ret = cap:findColorByTv(0x97dfff, 0x95a0f0,15, 15, 60, 5)
+		end	
+	end
 	if(ret.ret == 1)
 	then
 		 --怪物位置补偿35像素
@@ -1983,18 +1992,18 @@ function hit_monster_1(drv, cap, skills, tag, first)
 		local count = 0
 		repeat
 			count = count + 1
-			drv:keyPress('right',3)
+			drv:keyPress('up',3)
 			drv:keyPress('space',2)
 		until(count >=1)
 		sleep(1)
 		count = 0
 		repeat
 			count = count + 1
-			drv:keyPress('up',3)
+			drv:keyPress('left',3)
 			drv:keyPress('space',2)
 		until(count >=1)
-		sleep(0.5)
-		role_quick_move_right_down_dist(drv, 150)
+		sleep(0.3)
+		role_quick_move_right_dist(drv, 200)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic1"]["first"]) 
 		do
@@ -2021,7 +2030,7 @@ function hit_monster_2(drv, cap, skills, tag, first)
 	if(first == true)
 	then
 		--移动到指定位置
-		confirm_title_move_to_up(drv, cap, 50, true)
+		confirm_title_move_to_up(drv, cap, 5, true)
 		role_quick_move_right_dist(drv, 300)
 		for k,v in ipairs(skills["pic2"]["first"]) 
 		do
@@ -2048,8 +2057,8 @@ function hit_monster_3(drv, cap, skills, tag, first)
 	if(first == true)
 	then
 		--移动到指定位置
-		confirm_title_move_to_left(drv, cap, 5, true)
-		role_quick_move_right_dist(drv, 240)
+		confirm_title_move_to_up(drv, cap, 5, true)
+		role_quick_move_right_dist(drv, 230)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic3"]["first"]) 
 		do
@@ -2076,8 +2085,8 @@ function hit_monster_4(drv, cap, skills, tag, first)
 	if(first == true)
 	then
 		--移动到指定位置
-		confirm_title_move_to_right(drv, cap, 30, true)
-		role_quick_move_right_down_dist(drv, 350)
+		confirm_title_move_to_left(drv, cap, 5, true)
+		role_quick_move_right_down_dist(drv, 400)
 		role_move_left_dist(drv, 10)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic4"]["first"]) 
@@ -2105,7 +2114,7 @@ function hit_monster_5(drv, cap, skills, tag, first, ctx)
 	if(first == true)
 	then
 		--向左移动到指定位置打塔
-		confirm_title_move_to_right(drv, cap, 10, true)
+		confirm_title_move_to_up(drv, cap, 5, true)
 		role_quick_move_left_down_dist(drv, 310)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic5"]["first"]) 
@@ -2138,11 +2147,7 @@ function hit_monster_5(drv, cap, skills, tag, first, ctx)
 		end
 		ret2 = confirm_posi(cap, tag)
 	until(ret1 == 0 or ret2 ~= 5)
-	if(ctx.pic5status == true)
-	then
-		drv:keyPress('g',1)
-		ctx.pic5status = false
-	end
+
 end
 
 function hit_monster_6(drv, cap, skills, tag, first)
@@ -2156,12 +2161,12 @@ function hit_monster_6(drv, cap, skills, tag, first)
 	then
 		confirm_title_move_to_up(drv, cap, 5, true)
 		--role_quick_move_right_up_dist(drv, 150)
-		role_quick_move_right_dist(drv, 350)
+		role_quick_move_right_dist(drv, 250)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic6"]["first"]) 
 		do
 			use_mskill(drv, skills, v, 6)
-		end			
+		end	
 		use_xskill(drv)
 	else
 		role_quick_move_down_dist(drv, 300)
@@ -2308,7 +2313,14 @@ function move_to_right_gate_pic1(drv, cap, tag)
 		count = count + 1
 		--找人
 		ret1 = find_title(drv, cap)
-		
+		if(ret1.y <= 300)
+		then
+			role_quick_move_down_dist(drv, 100)
+		elseif(ret1.y >=400)
+		then
+			role_quick_move_up_dist(drv, 50)
+		end
+
 		if(ret1.x >= 400 and ret1.x <= 600)
 		then
 			role_quick_move_right_dist(drv, 550)
@@ -2849,8 +2861,7 @@ function pic_4_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	--确认此图是否完成,未完成重复刷怪
 	ret = confirm_finish_by_color(cap, 4)
 	local count  = 0
-	--while(ret == 0 and ret1 == 4 and count < 15)
-	while(ret == 0 and ret1 == 4)
+	while(ret == 0 and ret1 == 4 and count < 10)
 	do
 		count = count + 1
 		hit_monster_4(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
@@ -2875,8 +2886,7 @@ function pic_5_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	--确认此图是否完成,未完成重复刷怪
 	ret = confirm_finish_by_color(cap, 5)
 	local count  = 0
-	--while(ret == 0 and ret1 == 5 and count < 15)
-	while(ret == 0 and ret1 == 5)
+	while(ret == 0 and ret1 == 5 and count < 10)
 	do
 		count = count + 1
 		hit_monster_5(drv, cap, role_conf.skills[seq], step_conf.tag11, first, ctx)
@@ -2886,6 +2896,11 @@ function pic_5_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	end
 	--捡装备
 	pick_money(drv, cap)
+	if(ctx.pic5status == true)
+	then
+		drv:keyPress('g',1)
+		ctx.pic5status = false
+	end
 	--进入下一副图
 	ret = move_to_right_gate_pic5(drv, cap, step_conf.tag11)
 	print("------pic 5 over-------")
@@ -3024,9 +3039,9 @@ function death_to_life(drv, win, cap, hwind)
 	sleep(2)
 	local crect = reset_posi(drv, win, hwind, false)
 	--移动鼠标
-	drv:moveTo(crect.x + 375, crect.y + 405)
+	drv:moveTo(crect.x + 430, crect.y + 405)
 	sleep(1)
-	drv:leftClick(2)  --金币恢复
+	drv:leftClick(2)  --复活币复活
 	sleep(4)
 	role_quick_move_right_dist(drv, 200)
 	sleep(3)
@@ -3277,6 +3292,8 @@ function decompose_money(drv, win, cap, step_conf)
 
 end
 
+
+
 function six_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 
 	local count = 0
@@ -3329,9 +3346,35 @@ function six_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 	ret = confirm_ui_by_size(0, 350, 100, 130, cap, step_conf.tag1, 0.7, 1)
 	if(ret > 0 and ret1 > 0)
 	then
-		print("check package is full")
-		return 1
+::redo::
+		ctx.full_count = ctx.full_count + 1
+		if(ctx.full_count%3 == 0)
+		then
+			drv:keyPress("f12", 2)
+			local count = 0
+			repeat
+				sleep(3)
+				count = count +  1
+				ret = confirm_ui(cap, step_conf.tag_31, 0.8, 1)
+			until(ret > 0 or count >= 3)	
+			if(ret == 0)
+			then
+				goto redo  --
+			end	
+			--分解装备
+			print("check package is full to decompose")
+			decompose_money(drv, win, cap, step_conf)
+			sleep(4)
+			role_quick_move_right_dist(drv, 200)
+			sleep(3)
+			ctx.step = 4
+			return 3  --继续
+		else
+			print("check package is full to sell")
+			return 1
+		end
 	end
+
 	print("check package is not full")
 	--不需要卖装备就继续刷副本
 ::over::
@@ -3553,6 +3596,7 @@ ctx = {
 	start = false,
 	step = 0,
 	pic5status = true,
+	full_count = 0,
 }
 -------------------------------------------------------------------------------
 -----------------------------------task----------------------------------------
