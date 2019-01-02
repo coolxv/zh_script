@@ -1504,19 +1504,19 @@ end
 --放大技能
 function use_bskill(drv, skills, s)
 
-	local t = {'h', 'g'}
+	local t = {'h'}
 	for k,v in ipairs(t) 
 	do
 		drv:keyPress(v,3)
 		print("bskill 2:",v)
 	end
-	t = {'r', 'y', 'w', 'e', 't', 'q'}
+	t = { 'y', 'e', 'r', 't', 'q'}
 	for k,v in ipairs(t) 
 	do
 		drv:keyPress(v,1)
 		print("bskill 3:",v)
 	end
-	t = {'a', 's', 'd', 'f'}
+	t = {'a', 's', 'd'}
 	for k,v in ipairs(t) 
 	do
 		drv:keyPress(v,1)
@@ -1531,7 +1531,14 @@ function use_mskill(drv,skills, s, n)
 	local cur_time = os.time()
 	if((cur_time - skills[s].use_time) > skills[s].fix_time)
 	then
-			drv:keyPress(s,3)
+			if(skills[s].continue_time and skills[s].continue_time > 0)
+			then
+				drv:keyDown(s)
+				sleep_run(skills[s].continue_time)
+				drv:keyUp(s)
+			else
+				drv:keyPress(s,3)
+			end
 			sleep(skills[s].freeze_time)
 			skills[s].use_time = cur_time
 			print("mskill 1:", s)
@@ -1544,7 +1551,14 @@ function use_mskill(drv,skills, s, n)
 			(in_table(skills[v].use_pic, n) or  (#(skills[v].use_pic) == 0)) and
 			((not in_table(skills[v].unuse_pic, n)) or  (#(skills[v].unuse_pic) == 0)))
 		then
-				drv:keyPress(v,3)
+				if(skills[v].continue_time and skills[v].continue_time > 0)
+				then
+					drv:keyDown(v)
+					sleep_run(skills[v].continue_time)
+					drv:keyUp(v)
+				else
+					drv:keyPress(v,3)
+				end		
 				sleep(skills[v].freeze_time)
 				skills[v].use_time = cur_time
 				print("mskill 2:", v)
@@ -1558,7 +1572,14 @@ function use_mskill(drv,skills, s, n)
 			(in_table(skills[v].use_pic, n) or  (#(skills[v].use_pic) == 0)) and
 			((not in_table(skills[v].unuse_pic, n)) or  (#(skills[v].unuse_pic) == 0)))
 		then
-				drv:keyPress(v,3)
+				if(skills[v].continue_time and skills[v].continue_time > 0)
+				then
+					drv:keyDown(v)
+					sleep_run(skills[v].continue_time)
+					drv:keyUp(v)
+				else
+					drv:keyPress(v,3)
+				end
 				sleep(skills[v].freeze_time)
 				skills[v].use_time = cur_time
 				print("mskill 3:", v)
@@ -1575,7 +1596,14 @@ function use_sskill(drv,skills, s, n)
 	local cur_time = os.time()
 	if((cur_time - skills[s].use_time) > skills[s].fix_time)
 	then
-			drv:keyPress(s,3)
+			if(skills[s].continue_time and skills[s].continue_time > 0)
+			then
+				drv:keyDown(s)
+				sleep_run(skills[s].continue_time)
+				drv:keyUp(s)
+			else
+				drv:keyPress(s,3)
+			end
 			sleep(skills[s].freeze_time)
 			skills[s].use_time = cur_time
 			print("sskill 1:", s)
@@ -1588,7 +1616,14 @@ function use_sskill(drv,skills, s, n)
 			(in_table(skills[v].use_pic, n) or  (#(skills[v].use_pic) == 0)) and
 			((not in_table(skills[v].unuse_pic, n)) or  (#(skills[v].unuse_pic) == 0)))
 		then
-				drv:keyPress(v,3)
+				if(skills[v].continue_time and skills[v].continue_time > 0)
+				then
+					drv:keyDown(v)
+					sleep_run(skills[v].continue_time)
+					drv:keyUp(v)
+				else
+					drv:keyPress(v,3)
+				end	
 				sleep(skills[v].freeze_time)
 				skills[v].use_time = cur_time
 				print("sskill 2:", v)
@@ -1944,15 +1979,23 @@ function hit_monster_1(drv, cap, skills, tag, first)
 	then
 		--加buff
 		--移动到指定位置
-		confirm_title_move_to_down(drv, cap, 5, false)
+		confirm_title_move_to_up(drv, cap, 5, false)
 		local count = 0
 		repeat
 			count = count + 1
 			drv:keyPress('right',3)
 			drv:keyPress('space',2)
 		until(count >=1)
-		--移动到指定位置
+		sleep(1)
+		count = 0
+		repeat
+			count = count + 1
+			drv:keyPress('up',3)
+			drv:keyPress('space',2)
+		until(count >=1)
 		sleep(0.5)
+		role_quick_move_right_down_dist(drv, 150)
+		--移动到指定位置
 		for k,v in ipairs(skills["pic1"]["first"]) 
 		do
 			use_mskill(drv, skills, v, 1)
@@ -1978,8 +2021,8 @@ function hit_monster_2(drv, cap, skills, tag, first)
 	if(first == true)
 	then
 		--移动到指定位置
-		confirm_title_move_to_down(drv, cap, 5, true)
-		role_quick_move_right_dist(drv, 250)
+		confirm_title_move_to_up(drv, cap, 50, true)
+		role_quick_move_right_dist(drv, 300)
 		for k,v in ipairs(skills["pic2"]["first"]) 
 		do
 			use_mskill(drv, skills, v, 2)
@@ -2005,8 +2048,8 @@ function hit_monster_3(drv, cap, skills, tag, first)
 	if(first == true)
 	then
 		--移动到指定位置
-		confirm_title_move_to_up(drv, cap, 5, true)
-		role_quick_move_right_dist(drv, 310)
+		confirm_title_move_to_left(drv, cap, 5, true)
+		role_quick_move_right_dist(drv, 240)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic3"]["first"]) 
 		do
@@ -2033,8 +2076,8 @@ function hit_monster_4(drv, cap, skills, tag, first)
 	if(first == true)
 	then
 		--移动到指定位置
-		confirm_title_move_to_up(drv, cap, 5, true)
-		role_quick_move_right_down_dist(drv, 270)
+		confirm_title_move_to_right(drv, cap, 30, true)
+		role_quick_move_right_down_dist(drv, 350)
 		role_move_left_dist(drv, 10)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic4"]["first"]) 
@@ -2054,7 +2097,7 @@ function hit_monster_4(drv, cap, skills, tag, first)
 	until(ret1 == 0 or ret2 ~= 4)
 
 end
-function hit_monster_5(drv, cap, skills, tag, first)
+function hit_monster_5(drv, cap, skills, tag, first, ctx)
 	local ret
 	local ret1
 	local ret2
@@ -2062,8 +2105,8 @@ function hit_monster_5(drv, cap, skills, tag, first)
 	if(first == true)
 	then
 		--向左移动到指定位置打塔
-		confirm_title_move_to_up(drv, cap, 5, true)
-		role_quick_move_left_down_dist(drv, 270)
+		confirm_title_move_to_right(drv, cap, 10, true)
+		role_quick_move_left_down_dist(drv, 310)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic5"]["first"]) 
 		do
@@ -2095,6 +2138,11 @@ function hit_monster_5(drv, cap, skills, tag, first)
 		end
 		ret2 = confirm_posi(cap, tag)
 	until(ret1 == 0 or ret2 ~= 5)
+	if(ctx.pic5status == true)
+	then
+		drv:keyPress('g',1)
+		ctx.pic5status = false
+	end
 end
 
 function hit_monster_6(drv, cap, skills, tag, first)
@@ -2107,8 +2155,8 @@ function hit_monster_6(drv, cap, skills, tag, first)
 	if(first == true)
 	then
 		confirm_title_move_to_up(drv, cap, 5, true)
-		--role_quick_move_right_up_dist(drv, 200)
-		role_quick_move_right_dist(drv, 265)
+		--role_quick_move_right_up_dist(drv, 150)
+		role_quick_move_right_dist(drv, 350)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic6"]["first"]) 
 		do
@@ -2127,7 +2175,8 @@ function hit_monster_6(drv, cap, skills, tag, first)
 		end
 		ret2 = confirm_posi(cap, tag)
 	until(ret1 == 0 or ret2 ~= 6)
-
+	--
+	ctx.pic5status = true
 end
 function hit_monster_7(drv, cap, skills, first)
 	local ret
@@ -2138,7 +2187,9 @@ function hit_monster_7(drv, cap, skills, first)
 	if(first == true)
 	then
 		--移动到指定位置
-		confirm_title_move_to_right(drv, cap, 5, false)
+		confirm_title_move_to_right(drv, cap, 50, true)
+		role_quick_move_right_dist(drv, 250)
+		role_quick_move_up_dist(drv, 50)
 		for k,v in ipairs(skills["pic7"]["first"]) 
 		do
 			use_dskill(drv, skills, v)
@@ -2798,7 +2849,8 @@ function pic_4_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	--确认此图是否完成,未完成重复刷怪
 	ret = confirm_finish_by_color(cap, 4)
 	local count  = 0
-	while(ret == 0 and ret1 == 4 and count < 10)
+	--while(ret == 0 and ret1 == 4 and count < 15)
+	while(ret == 0 and ret1 == 4)
 	do
 		count = count + 1
 		hit_monster_4(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
@@ -2823,10 +2875,11 @@ function pic_5_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	--确认此图是否完成,未完成重复刷怪
 	ret = confirm_finish_by_color(cap, 5)
 	local count  = 0
-	while(ret == 0 and ret1 == 5 and count < 10)
+	--while(ret == 0 and ret1 == 5 and count < 15)
+	while(ret == 0 and ret1 == 5)
 	do
 		count = count + 1
-		hit_monster_5(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
+		hit_monster_5(drv, cap, role_conf.skills[seq], step_conf.tag11, first, ctx)
 		first = false
 		ret = confirm_finish_by_color(cap, 5)
 		ret1 = confirm_posi(cap, step_conf.tag11)
@@ -2846,7 +2899,7 @@ function pic_6_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	local first = true
 	repeat
 		--确认此图是否完成,未完成重复刷怪
-		hit_monster_6(drv, cap, role_conf.skills[seq], step_conf.tag11, first)
+		hit_monster_6(drv, cap, role_conf.skills[seq], step_conf.tag11, first, ctx)
 		first = false
 		--捡装备
 		pick_money(drv, cap)
@@ -3499,6 +3552,7 @@ ctx = {
 	count = 1,
 	start = false,
 	step = 0,
+	pic5status = true,
 }
 -------------------------------------------------------------------------------
 -----------------------------------task----------------------------------------
