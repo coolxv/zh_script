@@ -1395,7 +1395,7 @@ function four_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		then
 			--失败返回到上一阶段
 			drv:keyPress("esc", 1);
-			sleep_run(1)
+			sleep(1)
 			return 2 
 		end
 		ret = cap:findPicByTv(step_conf.tag2, 0.8)
@@ -1416,7 +1416,7 @@ function four_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		then
 			--失败返回到上一阶段
 			drv:keyPress("esc", 1);
-			sleep_run(1)
+			sleep(1)
 			return 2 
 		end		
 		ret = cap:findPicByTv(step_conf.tag3, 0.8)
@@ -1442,7 +1442,7 @@ function four_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		end
 		sleep(1.5)
 	until(ret.ret > 0 )	
-	sleep_run(1)
+	sleep(1)
 	ret = drv:keyPress("space", 3)
 	return 1
 end
@@ -1504,7 +1504,7 @@ end
 --直接释放
 function use_dskill(drv, skills, s)
 	local cur_time = os.time()
-	drv:keyPress(s,5)
+	drv:keyPress(s,3)
 	sleep(skills[s].freeze_time)
 	skills[s].use_time = cur_time
 	print("dskill :",s)
@@ -1519,7 +1519,7 @@ function use_bskill(drv, skills, s)
 		drv:keyPress(v,3)
 		print("bskill 2:",v)
 	end
-	t = { 'y', 'e', 'r', 't', 'q'}
+	t = { 'y', 'e', 'r', 't'}
 	for k,v in ipairs(t) 
 	do
 		drv:keyPress(v,1)
@@ -1543,8 +1543,13 @@ function use_mskill(drv,skills, s, n)
 			if(skills[s].continue_time and skills[s].continue_time > 0)
 			then
 				drv:keyDown(s)
-				sleep_run(skills[s].continue_time)
+				sleep(skills[s].continue_time)
 				drv:keyUp(s)
+			elseif(skills[s].twice_time and skills[s].twice_time > 0)
+			then
+				drv:keyPress(s,1)
+				sleep(skills[s].twice_time)
+				drv:keyPress(s,1)
 			else
 				drv:keyPress(s,3)
 			end
@@ -1563,8 +1568,13 @@ function use_mskill(drv,skills, s, n)
 				if(skills[v].continue_time and skills[v].continue_time > 0)
 				then
 					drv:keyDown(v)
-					sleep_run(skills[v].continue_time)
+					sleep(skills[v].continue_time)
 					drv:keyUp(v)
+				elseif(skills[v].twice_time and skills[v].twice_time > 0)
+				then
+					drv:keyPress(v,1)
+					sleep(skills[v].twice_time)
+					drv:keyPress(v,1)				
 				else
 					drv:keyPress(v,3)
 				end		
@@ -1584,8 +1594,13 @@ function use_mskill(drv,skills, s, n)
 				if(skills[v].continue_time and skills[v].continue_time > 0)
 				then
 					drv:keyDown(v)
-					sleep_run(skills[v].continue_time)
+					sleep(skills[v].continue_time)
 					drv:keyUp(v)
+				elseif(skills[v].twice_time and skills[v].twice_time > 0)
+				then
+					drv:keyPress(v,1)
+					sleep(skills[v].twice_time)
+					drv:keyPress(v,1)					
 				else
 					drv:keyPress(v,3)
 				end
@@ -1608,8 +1623,13 @@ function use_sskill(drv,skills, s, n)
 			if(skills[s].continue_time and skills[s].continue_time > 0)
 			then
 				drv:keyDown(s)
-				sleep_run(skills[s].continue_time)
+				sleep(skills[s].continue_time)
 				drv:keyUp(s)
+			elseif(skills[s].twice_time and skills[s].twice_time > 0)
+			then
+				drv:keyPress(s,1)
+				sleep(skills[s].twice_time)
+				drv:keyPress(s,1)				
 			else
 				drv:keyPress(s,3)
 			end
@@ -1628,8 +1648,13 @@ function use_sskill(drv,skills, s, n)
 				if(skills[v].continue_time and skills[v].continue_time > 0)
 				then
 					drv:keyDown(v)
-					sleep_run(skills[v].continue_time)
+					sleep(skills[v].continue_time)
 					drv:keyUp(v)
+				elseif(skills[v].twice_time and skills[v].twice_time > 0)
+				then
+					drv:keyPress(v,1)
+					sleep(skills[v].twice_time)
+					drv:keyPress(v,1)					
 				else
 					drv:keyPress(v,3)
 				end	
@@ -1995,15 +2020,15 @@ function hit_monster_1(drv, cap, skills, tag, first)
 			drv:keyPress('up',3)
 			drv:keyPress('space',2)
 		until(count >=1)
-		sleep(1)
+		sleep(0.5)
 		count = 0
 		repeat
 			count = count + 1
-			drv:keyPress('left',3)
+			drv:keyPress('right',3)
 			drv:keyPress('space',2)
 		until(count >=1)
-		sleep(0.3)
-		role_quick_move_right_dist(drv, 200)
+		sleep(0.5)
+		role_quick_move_right_down_dist(drv, 170)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic1"]["first"]) 
 		do
@@ -2057,7 +2082,7 @@ function hit_monster_3(drv, cap, skills, tag, first)
 	if(first == true)
 	then
 		--移动到指定位置
-		confirm_title_move_to_up(drv, cap, 5, true)
+		confirm_title_move_to_down(drv, cap, 15, true)
 		role_quick_move_right_dist(drv, 230)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic3"]["first"]) 
@@ -2085,8 +2110,8 @@ function hit_monster_4(drv, cap, skills, tag, first)
 	if(first == true)
 	then
 		--移动到指定位置
-		confirm_title_move_to_left(drv, cap, 5, true)
-		role_quick_move_right_down_dist(drv, 400)
+		confirm_title_move_to_up(drv, cap, 5, true)
+		role_quick_move_right_down_dist(drv, 360)
 		role_move_left_dist(drv, 10)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic4"]["first"]) 
@@ -2115,7 +2140,7 @@ function hit_monster_5(drv, cap, skills, tag, first, ctx)
 	then
 		--向左移动到指定位置打塔
 		confirm_title_move_to_up(drv, cap, 5, true)
-		role_quick_move_left_down_dist(drv, 310)
+		role_quick_move_left_down_dist(drv, 300)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic5"]["first"]) 
 		do
@@ -2159,9 +2184,9 @@ function hit_monster_6(drv, cap, skills, tag, first)
 	--移动到指定位置
 	if(first == true)
 	then
-		confirm_title_move_to_up(drv, cap, 5, true)
-		--role_quick_move_right_up_dist(drv, 150)
-		role_quick_move_right_dist(drv, 250)
+		confirm_title_move_to_down(drv, cap, 10, true)
+		role_quick_move_right_dist(drv, 350)
+		--role_quick_move_right_dist(drv, 250)
 		--移动到指定位置
 		for k,v in ipairs(skills["pic6"]["first"]) 
 		do
@@ -2274,11 +2299,11 @@ function pick_money(drv, cap)
 		ret = move_to_money(drv, cap)
 		if(ret == 1)
 		then
-			sleep_run(0.3)
+			sleep(0.3)
 			drv:keyPress('x',1)
 		elseif(count > 2)
 		then
-			sleep_run(0.3)
+			sleep(0.3)
 			drv:keyPress('x',1)
 		end
 	until(ret == 0 or count >= 3)
@@ -2290,11 +2315,11 @@ function pick_money(drv, cap)
 		ret = move_to_money(drv, cap)
 		if(ret == 1)
 		then
-			sleep_run(0.3)
+			sleep(0.3)
 			drv:keyPress('x',1)
 		elseif(count > 2)
 		then
-			sleep_run(0.3)
+			sleep(0.3)
 			drv:keyPress('x',1)
 		end
 	until(ret == 0 or count >= 3)
@@ -2846,6 +2871,7 @@ function pic_3_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	end
 	--捡装备
 	pick_money(drv, cap)
+
 	--进入下一副图
 	ret = move_to_down_gate_pic3(drv, cap, step_conf.tag11)
 	print("------pic 3 over-------")
@@ -2896,11 +2922,12 @@ function pic_5_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	end
 	--捡装备
 	pick_money(drv, cap)
+	--
 	if(ctx.pic5status == true)
 	then
 		drv:keyPress('g',1)
 		ctx.pic5status = false
-	end
+	end	
 	--进入下一副图
 	ret = move_to_right_gate_pic5(drv, cap, step_conf.tag11)
 	print("------pic 5 over-------")
@@ -2945,14 +2972,14 @@ function pic_7_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		--确认结束
 		--捡装备
 		drv:keyPress('NumAdd',1)
-		sleep_run(0.5)
+		sleep(0.5)
 		drv:keyPress('left',1)
 		drv:keyDown('x')
 		local count = 1
 		--确认黄金卡盘
 		repeat
 			count = count + 1
-			sleep_run(1)
+			sleep(1)
 			ret = confirm_gold_pic(cap, step_conf.tag4)
 			if(ret == 1)
 			then
@@ -3043,7 +3070,7 @@ function death_to_life(drv, win, cap, hwind)
 	sleep(1)
 	drv:leftClick(2)  --复活币复活
 	sleep(4)
-	role_quick_move_right_dist(drv, 200)
+	role_quick_move_right_dist(drv, 300)
 	sleep(3)
 end
 function confirm_death(drv, win, cap, step_conf, ctx)
@@ -3054,7 +3081,13 @@ function confirm_death(drv, win, cap, step_conf, ctx)
 		death_to_life(drv, win, cap, ctx.hwind)
 		return 1  --返回第三阶段
 	else
-		return 0
+		ret = confirm_ui_by_size(0,400,800,200, cap, step_conf.tag_41, 0.8, 1)
+		if(ret == 1)
+		then
+			return 1  --返回第三阶段
+		else
+			return 0
+		end
 	end	
 end
 
@@ -3348,7 +3381,7 @@ function six_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 	then
 ::redo::
 		ctx.full_count = ctx.full_count + 1
-		if(ctx.full_count%3 == 0)
+		if(ctx.full_count%1 == 0)
 		then
 			drv:keyPress("f12", 2)
 			local count = 0
@@ -3365,10 +3398,10 @@ function six_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 			print("check package is full to decompose")
 			decompose_money(drv, win, cap, step_conf)
 			sleep(4)
-			role_quick_move_right_dist(drv, 200)
+			role_quick_move_right_dist(drv, 300)
 			sleep(3)
 			ctx.step = 4
-			return 3  --继续
+			return 6  --退出在第4阶段继续执行
 		else
 			print("check package is full to sell")
 			return 1
@@ -3572,6 +3605,7 @@ lc_five_conf ={
 	tag4 = ".\\pic\\5_tag_4.jpg",
 	tag11 = ".\\pic\\5_tag_11.png",
 	tag_31 = ".\\pic\\3_tag_1.jpg",
+	tag_41 = ".\\pic\\4_tag_1.jpg",
 	
 }
 lc_six_conf ={
@@ -3767,7 +3801,7 @@ function account_proc(conf,user)
 	local ret
 	--local ret = drv:restart()
 	--print("restart:", ret)
-	--sleep_run(5)
+	--sleep(5)
 	ret = drv:openDevice(conf.vid, conf.pid)
 	if(1 == ret)
 	then

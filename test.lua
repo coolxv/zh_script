@@ -2507,9 +2507,12 @@ function move_to_right_gate_pic5(drv, cap, tag)
 		count = count + 1
 		--’“»À
 		ret1 = find_title(drv, cap)
-		if(ret1.y <= 400)
+		if(ret1.y <= 350)
 		then
 			role_quick_move_down_dist(drv, 150)
+		elseif(ret1.y >= 450)
+		then
+			role_quick_move_up_dist(drv, 75)
 		end		
 		--
 		if(ret1.x <= 600)
