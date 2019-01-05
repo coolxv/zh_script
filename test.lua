@@ -978,6 +978,8 @@ function first_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 	local ret = 0
 	local count = 0
 	local hwind  = 0
+	--复位
+	ctx.full_count = 0
 	--查找客户端
 	repeat
 		count = count + 1
@@ -1015,6 +1017,7 @@ function first_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 		ctx.login = true
 		return 1
 	else
+		ctx.first = false
 		return 0
 	end
 
@@ -1022,8 +1025,6 @@ function first_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 end
 function first_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	print("current role is ", seq)
-	--复位
-	ctx.full_count = 0
 	--复位并获取客户端位置
 	crect = reset_posi(drv, win, ctx.hwind,false)
 	if(ctx.first == true)
@@ -1527,10 +1528,12 @@ end
 --直接释放
 function use_dskill(drv, skills, s)
 	local cur_time = os.time()
-	drv:keyPress(s,5)
+	print("dskill :",s)
+	drv:keyPress(s,3)
+	sleep_run(0.2)
+	drv:keyPress(s,2)
 	sleep(skills[s].freeze_time)
 	skills[s].use_time = cur_time
-	print("dskill :",s)
 	return
 end
 --放大技能
@@ -2252,7 +2255,7 @@ function pick_money(drv, cap)
 		then
 			sleep(0.3)
 			drv:keyPress('x',1)
-		elseif(count > 2)
+		elseif(count >= 2)
 		then
 			sleep(0.3)
 			drv:keyPress('x',1)
@@ -2364,10 +2367,10 @@ function move_to_right_gate_pic2(drv, cap, tag)
 		
 		if(ret1.x >= 400 and ret1.x <= 600)
 		then
-			role_quick_move_right_dist(drv, 580)
+			role_quick_move_right_dist(drv, 550)
 		elseif(ret1.x < 400)
 		then
-			role_quick_move_right_dist(drv, 620)
+			role_quick_move_right_dist(drv, 600)
 		elseif(ret1.x >= 675)
 		then
 			role_quick_move_left_dist(drv, 75)
