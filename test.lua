@@ -312,6 +312,7 @@ function reset_posi(drv, win, hwind ,adjust)
 		drv:moveTo(crect.x + 400, crect.y + 5)
 		sleep(0.5)
 		drv:leftClick(2)
+		sleep(0.5)
 	end
 
 	return crect
@@ -332,8 +333,9 @@ function mouse_reset(drv, win, hwind)
 	local crect = win:getClientSize(hwind)
 	--移动移动鼠标
 	drv:moveTo(crect.x + 400, crect.y + 5)
-	sleep(0.1)
+	sleep(0.5)
 	drv:leftClick(2)
+	sleep(0.5)
 	print("mouse reset 400 5")
 	return crect
 end
@@ -383,7 +385,7 @@ function switch_to_role_select(drv, win, cap, win_name, pic)
 	until(ret.ret > 0)
 	--移动鼠标
 	mouse_move(drv, win, ctx.hwind, 385, 460)
-	drv:leftClick(3)
+	drv:leftClick(2)
 	sleep(3)
 	ret = cap:findPicByTvBySize(180, 90, 470, 390, pic, 0.5)
 	if(ret.ret > 0)
@@ -411,7 +413,7 @@ function switch_to_game_over(drv, win, cap, win_name, pic)
 	until(ret.ret > 0)
 	--移动鼠标
 	mouse_move(drv, win, ctx.hwind, 385, 460)
-	drv:leftClick(3)
+	drv:leftClick(2)
 	sleep(5)
 	hwind = find_windows_handle(win, win_name)
 	if(hwind > 0)
@@ -654,6 +656,15 @@ function find_monster(cap)
 	if(ret.ret == 0)
 	then
 		ret = cap:findColorByTv(0x85fffa, 0x85faf0, 15, 15, 60, 5)
+	end
+	--
+	if(ret.ret == 0)
+	then
+		ret = cap:findColorByTv(0x97dfff, 0x95a0f0, 39, 33, 650, 15)
+		if(ret.ret == 0)
+		then
+			ret = cap:findColorByTv(0x97dfff, 0x95a0f0,15, 15, 60, 5)
+		end	
 	end
 	if(ret.ret == 1)
 	then
@@ -925,7 +936,7 @@ function login_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		--登陆1
 		print("to login 1")
 		drv:moveTo(crect.x + 830, crect.y + 495)
-		drv:leftClick(1)
+		drv:leftClick(2)
 		sleep(5)
 	end
 	
@@ -1010,207 +1021,217 @@ function first_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 
 end
 function first_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
-
+	print("current role is ", seq)
+	--复位
+	ctx.full_count = 0
 	--复位并获取客户端位置
 	crect = reset_posi(drv, win, ctx.hwind,false)
-	--
-	drv:moveTo(crect.x + 130, crect.y + 180)
-	sleep(1)
-	drv:leftClick(1)
-	sleep(1)
-	wheels_move_up(drv, 5)
-	sleep(1)
-	drv:leftClick(1)
-	sleep(1)
-	--选择角色
-	if(seq == 1)
+	if(ctx.first == true)
 	then
-		print("select 1 role")
-	elseif(seq == 2)
-	then
-		drv:keyPress("right",1)
-		print("select 2 role")
-	elseif(seq == 3)
-	then
-		drv:keyPress("right",1)
+		ctx.first = false
+		drv:moveTo(crect.x + 130, crect.y + 180)
 		sleep(1)
-		drv:keyPress("right",1)
-		print("select 3 role")
-	elseif(seq == 4)
-	then
-		drv:keyPress("right",1)
+		drv:leftClick(1)
 		sleep(1)
-		drv:keyPress("right",1)
+		wheels_move_up(drv, 5)
 		sleep(1)
-		drv:keyPress("right",1)
-		print("select 4 role")
-	elseif(seq == 5)
-	then
-		drv:keyPress("down",1)
-		print("select 5 role")
-	elseif(seq == 6)
-	then
-		drv:keyPress("down",1)
+		drv:leftClick(1)
 		sleep(1)
-		drv:keyPress("right",1)
-		print("select 6 role")
-	elseif(seq == 7)
-	then
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("right",1)
-		sleep(1)
-		drv:keyPress("right",1)
-		print("select 7 role")
-	elseif(seq == 8)
-	then
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("right",1)
-		sleep(1)
-		drv:keyPress("right",1)
-		sleep(1)
-		drv:keyPress("right",1)
-		print("select 8 role")
-	elseif(seq == 9)
-	then
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("down",1)
-		sleep(1)
-		print("select 9 role")
-	elseif(seq == 10)
-	then
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("right",1)
-		print("select 10 role")
-	elseif(seq == 11)
-	then
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("right",1)
-		sleep(1)
-		drv:keyPress("right",1)
-		print("select 11 role")
-	elseif(seq == 12)
-	then
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("right",1)
-		sleep(1)
-		drv:keyPress("right",1)
-		sleep(1)
-		drv:keyPress("right",1)
-		print("select 12 role")
-	elseif(seq == 13)
-	then
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("down",1)
-		sleep(1)
-		print("select 13 role")
-	elseif(seq == 14)
-	then
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("right",1)
-		print("select 14 role")
-	elseif(seq == 15)
-	then
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("right",1)
-		sleep(1)
-		drv:keyPress("right",1)
-		print("select 15 role")
-	elseif(seq == 16)
-	then
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("right",1)
-		sleep(1)
-		drv:keyPress("right",1)
-		sleep(1)
-		drv:keyPress("right",1)
-		print("select 16 role")	
-	elseif(seq == 17)
-	then
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("down",1)
-		sleep(1)
-		print("select 17 role")
-	elseif(seq == 18)
-	then
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("right",1)
-		print("select 18 role")
-	elseif(seq == 19)
-	then
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("right",1)
-		sleep(1)
-		drv:keyPress("right",1)
-		print("select 19 role")
-	elseif(seq == 20)
-	then
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("down",1)
-		sleep(1)
-		drv:keyPress("right",1)
-		sleep(1)
-		drv:keyPress("right",1)
-		sleep(1)
-		drv:keyPress("right",1)
-		print("select 20 role")	
+		--选择角色
+		if(seq == 1)
+		then
+			print("select 1 role")
+		elseif(seq == 2)
+		then
+			drv:keyPress("right",1)
+			print("select 2 role")
+		elseif(seq == 3)
+		then
+			drv:keyPress("right",1)
+			sleep(1.5)
+			drv:keyPress("right",1)
+			print("select 3 role")
+		elseif(seq == 4)
+		then
+			drv:keyPress("right",1)
+			sleep(1.5)
+			drv:keyPress("right",1)
+			sleep(1.5)
+			drv:keyPress("right",1)
+			print("select 4 role")
+		elseif(seq == 5)
+		then
+			drv:keyPress("down",1)
+			print("select 5 role")
+		elseif(seq == 6)
+		then
+			drv:keyPress("down",1)
+			sleep(1.5)
+			drv:keyPress("right",1)
+			print("select 6 role")
+		elseif(seq == 7)
+		then
+			drv:keyPress("down",1)
+			sleep(1.5)
+			drv:keyPress("right",1)
+			sleep(1.5)
+			drv:keyPress("right",1)
+			print("select 7 role")
+		elseif(seq == 8)
+		then
+			drv:keyPress("down",1)
+			sleep(1.5)
+			drv:keyPress("right",1)
+			sleep(1.5)
+			drv:keyPress("right",1)
+			sleep(1.5)
+			drv:keyPress("right",1)
+			print("select 8 role")
+		elseif(seq == 9)
+		then
+			drv:keyPress("down",1)
+			sleep(1.5)
+			drv:keyPress("down",1)
+			sleep(1.5)
+			print("select 9 role")
+		elseif(seq == 10)
+		then
+			drv:keyPress("down",1)
+			sleep(1.5)
+			drv:keyPress("down",1)
+			sleep(1.5)
+			drv:keyPress("right",1)
+			print("select 10 role")
+		elseif(seq == 11)
+		then
+			drv:keyPress("down",1)
+			sleep(1.5)
+			drv:keyPress("down",1)
+			sleep(1.5)
+			drv:keyPress("right",1)
+			sleep(1.5)
+			drv:keyPress("right",1)
+			print("select 11 role")
+		elseif(seq == 12)
+		then
+			drv:keyPress("down",1)
+			sleep(1.5)
+			drv:keyPress("down",1)
+			sleep(1.5)
+			drv:keyPress("right",1)
+			sleep(1.5)
+			drv:keyPress("right",1)
+			sleep(1.5)
+			drv:keyPress("right",1)
+			print("select 12 role")
+		elseif(seq == 13)
+		then
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("down",1)
+			sleep(1)
+			print("select 13 role")
+		elseif(seq == 14)
+		then
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("right",1)
+			print("select 14 role")
+		elseif(seq == 15)
+		then
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("right",1)
+			sleep(1)
+			drv:keyPress("right",1)
+			print("select 15 role")
+		elseif(seq == 16)
+		then
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("right",1)
+			sleep(1)
+			drv:keyPress("right",1)
+			sleep(1)
+			drv:keyPress("right",1)
+			print("select 16 role")	
+		elseif(seq == 17)
+		then
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("down",1)
+			sleep(1)
+			print("select 17 role")
+		elseif(seq == 18)
+		then
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("right",1)
+			print("select 18 role")
+		elseif(seq == 19)
+		then
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("right",1)
+			sleep(1)
+			drv:keyPress("right",1)
+			print("select 19 role")
+		elseif(seq == 20)
+		then
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("down",1)
+			sleep(1)
+			drv:keyPress("right",1)
+			sleep(1)
+			drv:keyPress("right",1)
+			sleep(1)
+			drv:keyPress("right",1)
+			print("select 20 role")	
+		else
+			print("select role:0")
+		end
+
 	else
-		return 0
+		sleep(1)
+		drv:keyPress("right",1)
 	end
-	--判断是否进入下一阶段
+	print("select role:",seq)
+	sleep(1)
 	local ret
 	local count = 0
 	repeat
@@ -1235,6 +1256,7 @@ end
 function second_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 	local ret = 0
 	local ret1 = 0
+	print("current role is ", seq)
 	--获取焦点
 	reset_posi(drv, win, ctx.hwind,false)
 	--确认界面
@@ -1304,6 +1326,7 @@ end
 -------------------------------------------------------------------------------
 function three_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 	local ret = 0
+	print("current role is ", seq)
 	--获取焦点
 	reset_posi(drv, win, ctx.hwind,false)
 	--确认界面
@@ -1324,20 +1347,28 @@ function three_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	local ret
 	local count = 0
 	repeat
+		--[[
 		count = count +  1
 		sleep(1)
 		drv:keyPress("n", 1)
 		sleep(3)
 		--移动鼠标
 		mouse_move(drv, win, ctx.hwind, 505, 460)
-		sleep(1)
-		drv:leftClick(1)
-		sleep(1)
-		drv:leftClick(1)
+		sleep(0.5)
+		drv:leftClick(2)
+		sleep(0.5)
+		drv:leftClick(2)
 		sleep(2)
 		drv:keyPress("n", 1)
 		sleep(10)
 		role_move_right_time(drv,2)
+		]]--
+		drv:keyDown("right")
+		sleep(0.5)
+		drv:keyDown("up")
+		sleep(10)
+		drv:keyUpAll()		
+		
 		ret = confirm_ui(cap, step_conf.tag_41, 0.8, 1)
 	until(ret > 0 or count >= 5)
 	if(ret > 0)
@@ -1352,7 +1383,7 @@ end
 -------------------------------------------------------------------------------
 function four_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 	local ret = 0
-	
+	print("current role is ", seq)
 	--获取焦点
 	reset_posi(drv, win, ctx.hwind,false)
 	--恢复back
@@ -1386,7 +1417,7 @@ function four_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		then
 			--失败返回到上一阶段
 			drv:keyPress("esc", 1);
-			sleep_run(1)
+			sleep(1)
 			return 2 
 		end
 		ret = cap:findPicByTv(step_conf.tag2, 0.8)
@@ -1407,7 +1438,7 @@ function four_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		then
 			--失败返回到上一阶段
 			drv:keyPress("esc", 1);
-			sleep_run(1)
+			sleep(1)
 			return 2 
 		end		
 		ret = cap:findPicByTv(step_conf.tag3, 0.8)
@@ -1433,7 +1464,7 @@ function four_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		end
 		sleep(1.5)
 	until(ret.ret > 0 )	
-	sleep_run(1)
+	sleep(1)
 	ret = drv:keyPress("space", 3)
 	return 1
 end
@@ -1442,6 +1473,7 @@ end
 -------------------------------------------------------------------------------
 function five_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 	local ret = 0
+	print("current role is ", seq)
 	--获取焦点
 	reset_posi(drv, win, ctx.hwind,false)
 	--确认界面
@@ -2218,11 +2250,11 @@ function pick_money(drv, cap)
 		ret = move_to_money(drv, cap)
 		if(ret == 1)
 		then
-			sleep_run(0.3)
+			sleep(0.3)
 			drv:keyPress('x',1)
 		elseif(count > 2)
 		then
-			sleep_run(0.3)
+			sleep(0.3)
 			drv:keyPress('x',1)
 		end
 	until(ret == 0 or count >= 3)
@@ -2234,11 +2266,11 @@ function pick_money(drv, cap)
 		ret = move_to_money(drv, cap)
 		if(ret == 1)
 		then
-			sleep_run(0.3)
+			sleep(0.3)
 			drv:keyPress('x',1)
 		elseif(count > 2)
 		then
-			sleep_run(0.3)
+			sleep(0.3)
 			drv:keyPress('x',1)
 		end
 	until(ret == 0 or count >= 3)
@@ -2257,7 +2289,14 @@ function move_to_right_gate_pic1(drv, cap, tag)
 		count = count + 1
 		--找人
 		ret1 = find_title(drv, cap)
-		
+		if(ret1.y <= 300)
+		then
+			role_quick_move_down_dist(drv, 100)
+		elseif(ret1.y >=400)
+		then
+			role_quick_move_up_dist(drv, 50)
+		end
+
 		if(ret1.x >= 400 and ret1.x <= 600)
 		then
 			role_quick_move_right_dist(drv, 550)
@@ -2315,17 +2354,20 @@ function move_to_right_gate_pic2(drv, cap, tag)
 		count = count + 1
 		--找人
 		ret1 = find_title(drv, cap)
-		if(ret1.y <= 300)
+		if(ret1.y <= 350)
 		then
 			role_quick_move_down_dist(drv, 100)
+		elseif(ret1.y >= 450)
+		then
+			role_quick_move_up_dist(drv, 75)
 		end
 		
 		if(ret1.x >= 400 and ret1.x <= 600)
 		then
-			role_quick_move_right_dist(drv, 550)
+			role_quick_move_right_dist(drv, 580)
 		elseif(ret1.x < 400)
 		then
-			role_quick_move_right_dist(drv, 650)
+			role_quick_move_right_dist(drv, 620)
 		elseif(ret1.x >= 675)
 		then
 			role_quick_move_left_dist(drv, 75)
@@ -2460,7 +2502,7 @@ function move_to_down_gate_pic4(drv, cap, tag)
 					role_quick_move_right_dist(drv, ret.x - ret1.x)
 					role_move_left_dist(drv, 0)
 				else
-					role_quick_move_right_dist(drv, (ret.x - ret1.x)%100)
+					role_quick_move_right_dist(drv, (ret.x - ret1.x)%120)
 					role_move_left_dist(drv, 0)
 				end
 			else
@@ -2473,7 +2515,7 @@ function move_to_down_gate_pic4(drv, cap, tag)
 				then
 					role_quick_move_down_dist(drv, ret.y - ret1.y)
 				else
-					role_quick_move_down_dist(drv, (ret.y - ret1.y)%100)
+					role_quick_move_down_dist(drv, (ret.y - ret1.y)%120)
 				end
 			else
 				role_quick_move_up_dist(drv, ret1.y - ret.y)
@@ -2786,6 +2828,7 @@ function pic_3_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 	end
 	--捡装备
 	pick_money(drv, cap)
+
 	--进入下一副图
 	ret = move_to_down_gate_pic3(drv, cap, step_conf.tag11)
 	print("------pic 3 over-------")
@@ -2880,14 +2923,14 @@ function pic_7_proc(drv, win, cap, role_conf, step_conf, seq, ctx)
 		--确认结束
 		--捡装备
 		drv:keyPress('NumAdd',1)
-		sleep_run(0.5)
+		sleep(0.5)
 		drv:keyPress('left',1)
 		drv:keyDown('x')
 		local count = 1
 		--确认黄金卡盘
 		repeat
 			count = count + 1
-			sleep_run(1)
+			sleep(1)
 			ret = confirm_gold_pic(cap, step_conf.tag4)
 			if(ret == 1)
 			then
@@ -2989,7 +3032,13 @@ function confirm_death(drv, win, cap, step_conf, ctx)
 		death_to_life(drv, win, cap, ctx.hwind)
 		return 1  --返回第三阶段
 	else
-		return 0
+		ret = confirm_ui_by_size(0,400,800,200, cap, step_conf.tag_41, 0.8, 1)
+		if(ret == 1)
+		then
+			return 1  --返回第三阶段
+		else
+			return 0
+		end
 	end	
 end
 
@@ -3010,7 +3059,7 @@ function back_to_town(drv, win, cap, win_name, pic)
 	repeat
 		count = count + 1
 		drv:leftClick(1)
-		sleep(0.1)
+		sleep(0.5)
 		drv:keyPress("esc", 1);
 		sleep(3)
 		ret = cap:findPicByTvBySize(180, 90, 470, 390, pic, 0.5)
@@ -3205,13 +3254,14 @@ function decompose_money(drv, win, cap, step_conf)
 		sleep(1)
 		--移动鼠标
 		drv:moveTo(crect.x + 490, crect.y + 165)
-		sleep(1)
+		sleep(1.5)
 		drv:leftClick(1)
 		--移动鼠标
 		drv:moveTo(crect.x + 490 + 55, crect.y + 165 + 55)
-		sleep(1)
+		sleep(1.5)
 		drv:leftClick(1)	
 		sleep(1)
+		mouse_reset(drv, win, ctx.hwind)
 		ret = cap:findPicByTv(step_conf.tag3, 0.65)
 		dump_table(ret)
 	until(ret.ret > 0 )	
@@ -3222,10 +3272,12 @@ function decompose_money(drv, win, cap, step_conf)
 	drv:keyPress("enter", 1)
 	sleep(5)
 	--esc
-	--confirm_menu(drv,win, cap, step_conf.win_name, step_conf.comm_tag1)
+	confirm_menu(drv,win, cap, step_conf.win_name, step_conf.comm_tag1)
 	return
 
 end
+
+
 
 function six_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 
@@ -3259,6 +3311,7 @@ function six_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 			goto redo  --
 		end	
 		--分解装备
+		confirm_menu(drv,win, cap, step_conf.win_name, step_conf.comm_tag1)
 		decompose_money(drv, win, cap, step_conf)
 		--最好在确认下在角色选择的图中了
 		switch_to_role_select(drv, win, cap, step_conf.win_name, step_conf.comm_tag1)
@@ -3279,9 +3332,35 @@ function six_match(drv, win, cap, role_conf, step_conf, seq, ctx)
 	ret = confirm_ui_by_size(0, 350, 100, 130, cap, step_conf.tag1, 0.7, 1)
 	if(ret > 0 and ret1 > 0)
 	then
-		print("check package is full")
-		return 1
+::redo::
+		ctx.full_count = ctx.full_count + 1
+		if(ctx.full_count%gc_software_conf.decompose_times == 0)
+		then
+			drv:keyPress("f12", 2)
+			local count = 0
+			repeat
+				sleep(3)
+				count = count +  1
+				ret = confirm_ui(cap, step_conf.tag_31, 0.8, 1)
+			until(ret > 0 or count >= 3)	
+			if(ret == 0)
+			then
+				goto redo  --
+			end	
+			--分解装备
+			confirm_menu(drv,win, cap, step_conf.win_name, step_conf.comm_tag1)
+			print("check package is full to decompose")
+			decompose_money(drv, win, cap, step_conf)
+			role_quick_move_right_dist(drv, 300)
+			sleep(3)
+			ctx.step = 4
+			return 6  --退出在第4阶段继续执行
+		else
+			print("check package is full to sell")
+			return 1
+		end
 	end
+
 	print("check package is not full")
 	--不需要卖装备就继续刷副本
 ::over::
@@ -3479,6 +3558,7 @@ lc_five_conf ={
 	tag4 = ".\\pic\\5_tag_4.jpg",
 	tag11 = ".\\pic\\5_tag_11.png",
 	tag_31 = ".\\pic\\3_tag_1.jpg",
+	tag_41 = ".\\pic\\4_tag_1.jpg",
 	
 }
 lc_six_conf ={
@@ -3502,6 +3582,8 @@ ctx = {
 	count = 1,
 	start = false,
 	step = 0,
+	full_count = 0,
+	first = true,
 }
 -------------------------------------------------------------------------------
 -----------------------------------task----------------------------------------
@@ -3672,7 +3754,7 @@ function account_proc(conf,user)
 	local ret
 	--local ret = drv:restart()
 	--print("restart:", ret)
-	--sleep_run(5)
+	--sleep(5)
 	ret = drv:openDevice(conf.vid, conf.pid)
 	if(1 == ret)
 	then
